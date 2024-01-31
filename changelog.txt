@@ -1,5 +1,13 @@
 ---------------------------------------------------------------------------------------------------
-Version: 0.1.0
+Version: 0.1.1
 Date: 2024-01-30
+  Changes:
+    - Pipes will update adjacent pipes when placed
+    - Pipes will update adjacent pipes when placed by bots
+    - Pipes will update adjacent pipes when removed
+    - Pipes will update adjacent pipes when removed by bots
+---------------------------------------------------------------------------------------------------
+Version: 0.1.0
+Date: 2024-01-29
   Info:
     - Initial release
