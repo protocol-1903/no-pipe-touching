@@ -147,6 +147,8 @@ end
 -- filter items on ghost placement           done i think
 -- fix upgrade groups                        n
 -- fix ghosts placing actual pipes           n
+-- fix placing a ghost pipe updating adjacent ghost pipes to pipes
+-- fix placing a pipe next to a pipe that is next to another pipe connecting the two other pipes regardless of material
 
 script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_entity}, function (event)
   local entity = event.created_entity
