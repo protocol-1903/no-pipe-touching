@@ -1,7 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.4
+Date: ????
+  Changes:
+    - Cleaned up internal code
+    - Added item names and descriptions to replacement pipes
+---------------------------------------------------------------------------------------------------
 Version: 0.1.3
 Date: 2024-02-06
-  Changes:
   Bugfixes:
     - Prevents accidental removal of fluid when a pipe is updated
     - Pipes of cannot be placed where it would connect multiple different fluids
