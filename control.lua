@@ -134,7 +134,8 @@ end
 -- on-cancelled-deconstruction     done
 -- on-marked-for-deconstruction    n
 -- on-player-deconstructed-area    n
--- on-robot-mined-entity           n
+-- on-robot-mined-entity           done
+-- on-player-mined-entity          done
 -- quick replacement               n
 
 -- prevent pipes completely surrounded       n
