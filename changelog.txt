@@ -1,11 +1,24 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.4
+Date: 2024-02-06
+  Changes:
+    - Cleaned up internal code
+    - Added item names and descriptions to replacement pipes
+---------------------------------------------------------------------------------------------------
+Version: 0.1.3
+Date: 2024-02-06
+  Bugfixes:
+    - Prevents accidental removal of fluid when a pipe is updated
+    - Pipes of cannot be placed where it would connect multiple different fluids
+---------------------------------------------------------------------------------------------------
 Version: 0.1.2
 Date: 2024-02-05
   Changes:
-    - Hopefully fixed some compatability issues by checking if pipes have 4 fluidbox connections before copying :D
     - Does not update on ghost pipe placement - improves blueprinting reliability and lowers script cost
     - Does not update ghost pipes - improves blueprinting reliability and lowers script cost
     - Pipes of differing type can be placed between pipes that have different fluids
+  Bugfixes:
+    - Hopefully fixed some compatability issues by checking if pipes have 4 fluidbox connections before copying :D
     - Fixes an issue where some pipes would not update correctly when a pipe was removed
     - Probably something else I'm forgetting
 ---------------------------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 {
   "name": "no-pipe-touching",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "title": "No Pipe Touching",
   "description": "Allows you to place pipes of different materials next to each other without them connecting. Designed as a less fancy alternative to advanced fluid handling, without the recipe complexity of flow control.",
   "author": "protocol_1903",
