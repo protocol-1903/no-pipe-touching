@@ -134,43 +134,6 @@ local function updateAdjacent(position, surface, skip)
   end
 end
 
--- on-built-entity                 done
--- on-robot-built-entity           done
--- on-robot-mined-entity           done
--- on-player-mined-entity          done
--- on-cancelled-deconstruction     done
--- on-pre-ghost-updated            n
--- on-pre-ghost-deconstructed      n
--- on-marked-for-deconstruction    n
--- on-player-deconstructed-area    n
--- quick replacement               n
-
--- prevent pipes completely surrounded       n
--- update entities on place pipe             done
--- update entities on remove pipe            done
--- check robot interactions                  who knows
--- deconstruction                            done
--- look into fast replacing while running    n
--- fix bots placing in illegal places        done ish
--- filter items on ghost placement           done i think
--- fix upgrade groups                        n
--- fix ghosts placing actual pipes           n
--- fix placing a ghost pipe updating adjacent ghost pipes to pipes
--- fix placing a pipe next to a pipe that is next to another pipe connecting the two other pipes regardless of material
--- swap pipe item place result to null pipe
--- check fluid contents to make sure fluids dont mix
--- removing a pipe adjacent to a pipe turns it into a basic pipe in some cases, where another pipe is across the adjacent pipe but not registered
-
--- do not remove fluids from updated pipes
--- prevent pipe placement if it will connect different fluids
--- prevent construction if it will be completely blocked
-
-
--- do not prevent construciton if fully blocked
--- only reason to not construct is if the fluid boxes contain different fluids and the pipe would connect those fluids
--- only check fluid boxes when placed manually. do not check when using ghosts and robots
-
-
 ---------------------------------------------------------------------------------------------------
 script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_entity}, function (event)
   log("on place")
@@ -235,7 +198,7 @@ script.on_event({defines.events.on_cancelled_deconstruction}, function (event)
   local entity = event.entity
   
   -- check if pipe, otherwise return
-  if entity.type ~= "pipe" and entity.type ~= "entity-ghost" then return; end
+  if entity.type ~= "pipe" then return; end
 	local pipeType = getType(entity)
 
   -- check if valid, otherwise return
@@ -259,23 +222,11 @@ script.on_event({defines.events.on_cancelled_deconstruction}, function (event)
   if not entity.destroy() then return; end -- return if something breaks
   
   -- replace old entity
-  local pipe
-  if type == "pipe" then
-    pipe = surface.create_entity({
-      name = string.format("%s-npt[%02d]", pipeType, 15 - blocked),
-      position = position,
-      force = force
-    })
-  else
-    log("--------------- un deconstruct entity ghost")
-    pipe = surface.create_entity({
-      name = "entity-ghost",
-      inner_name = string.format("%s-npt[%02d]", pipeType, 15 - blocked),
-      position = position,
-      force = force
-  })
-  end
-  if pipe and event.player_index then pipe.last_user = event.player_index; end
+  surface.create_entity({
+    name = string.format("%s-npt[%02d]", pipeType, 15 - blocked),
+    position = position,
+    force = force
+  }).last_user = event.player_index
 end)
 
 ---------------------------------------------------------------------------------------------------
