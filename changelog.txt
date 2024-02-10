@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.6
+Date: 2024-02-10
+  Bugfixes:
+    - Replaced missing entity names
+---------------------------------------------------------------------------------------------------
 Version: 0.1.5
 Date: 2024-02-10
   Changes:
@@ -10,7 +15,7 @@ Version: 0.1.4
 Date: 2024-02-06
   Changes:
     - Cleaned up internal code
-    - Added item names and descriptions to replacement pipes
+    - Added entity names and descriptions to replacement pipes
 ---------------------------------------------------------------------------------------------------
 Version: 0.1.3
 Date: 2024-02-06
