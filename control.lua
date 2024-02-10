@@ -24,7 +24,7 @@ local function findBlocked(entity, surface, skip)
   local fluid
   for i, offset in pairs({{0,-1}, {1,0}, {0,1}, {-1,0}}) do
     log("looking for blocking at" .. entity.position.x + offset[1] .. ", " .. entity.position.y + offset[2])
-    if not skip or (entity.position.x + offset[1] ~= skip.x and entity.position.y + offset[2] ~= skip.y) then
+    if not skip or (entity.position.x + offset[1] ~= skip.x or entity.position.y + offset[2] ~= skip.y) then
       -- find pipe (?)
       local pipe = surface.find_entities_filtered({type = 'pipe', position = {entity.position.x + offset[1], entity.position.y + offset[2]}})[1]
       -- check pipe material
@@ -107,7 +107,7 @@ local function updateAdjacent(position, surface, skip)
       end
 
       -- update the pipe if something is different
-      if adj_blocked ~= getPipeBlocked(adjacent_pipe) and not adjacent_pipe.to_be_deconstructed() then
+      if adj_blocked ~= getPipeBlocked(adjacent_pipe) and not adjacent_pipe.to_be_deconstructed() and not adjacent_pipe.to_be_upgraded() then
         log("creating new pipe")
         -- create some local variables
         local fluidbox = adjacent_pipe.fluidbox[1]
@@ -115,8 +115,6 @@ local function updateAdjacent(position, surface, skip)
         local force = adjacent_pipe.force
         local last_user = adjacent_pipe.last_user
         local to_be_upgraded = adjacent_pipe.to_be_upgraded()
-        local upgrade_target
-        if to_be_upgraded then upgrade_target = adjacent_pipe.get_upgrade_target() end
         local name
         local type = getType(adjacent_pipe)
         adjacent_pipe.destroy()
@@ -125,15 +123,13 @@ local function updateAdjacent(position, surface, skip)
         else
           name = type
         end
-        local new_pipe = surface.create_entity({
+        surface.create_entity({
           name = name,
           position = adj_position,
           force = force,
           player = last_user,
           create_build_effect_smoke = false
-        })
-        new_pipe.fluidbox[1] = fluidbox
-        if to_be_upgraded then new_pipe.order_upgrade{force = force, player = last_user, target = upgrade_target} end
+        }).fluidbox[1] = fluidbox
       end
     end
   end
