@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.5
+Date: 2024-02-10
+  Changes:
+    - Prevents pipe replacement with another material (hotfix while i try to figure out fast replacement)
+  Bugfixes:
+    - Fixed pipe update shenanegins
+---------------------------------------------------------------------------------------------------
 Version: 0.1.4
 Date: 2024-02-06
   Changes:
