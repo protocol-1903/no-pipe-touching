@@ -114,6 +114,9 @@ local function updateAdjacent(position, surface, skip)
         local adj_position = adjacent_pipe.position
         local force = adjacent_pipe.force
         local last_user = adjacent_pipe.last_user
+        local to_be_upgraded = adjacent_pipe.to_be_upgraded()
+        local upgrade_target
+        if to_be_upgraded then upgrade_target = adjacent_pipe.get_upgrade_target() end
         local name
         local type = getType(adjacent_pipe)
         adjacent_pipe.destroy()
@@ -122,13 +125,15 @@ local function updateAdjacent(position, surface, skip)
         else
           name = type
         end
-        surface.create_entity({
+        local new_pipe = surface.create_entity({
           name = name,
           position = adj_position,
           force = force,
           player = last_user,
           create_build_effect_smoke = false
-        }).fluidbox[1] = fluidbox
+        })
+        new_pipe.fluidbox[1] = fluidbox
+        if to_be_upgraded then new_pipe.order_upgrade{force = force, player = last_user, target = upgrade_target} end
       end
     end
   end

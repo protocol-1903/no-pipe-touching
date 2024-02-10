@@ -2,6 +2,8 @@ for p, prototype in pairs(data.raw.pipe) do
   if (not string.find(p, "npt-") and prototype.fluid_box and prototype.fluid_box.pipe_connections
   and #prototype.fluid_box.pipe_connections == 4) then
     prototype.placeable_by = {item = p, count = 1}
+    prototype.fast_replaceable_group = nil
+    table.insert(prototype.flags, "not-upgradable")
     -- create variations
     for i = 0, 14 do
       local pip = util.table.deepcopy(prototype)
