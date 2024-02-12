@@ -29,17 +29,19 @@ local function findBlocked(entity, surface, skip)
       local pipe = surface.find_entities_filtered({type = 'pipe', position = {entity.position.x + offset[1], entity.position.y + offset[2]}})[1]
       -- check pipe material
       log("found entity (?) at" .. entity.position.x + offset[1] .. ", " .. entity.position.y + offset[2])
-      local type = getType(pipe)  
+      local type = getType(pipe)
       if type and type ~= getType(entity) then
         log("found blocking at" .. entity.position.x + offset[1] .. ", " .. entity.position.y + offset[2])
         blocked = blocked + 2^(i - 1)
       else
         -- check fluid contents
-        if pipe and not fluid and pipe.fluidbox[1] then
-          fluid = pipe.fluidbox[1].name
-        elseif pipe and pipe.fluidbox[1] then
-          if pipe.fluidbox[1].name ~= fluid then
-            return -1
+        if pipe and pipe.fluidbox.get_fluid_system_contents(1) then
+          for check, _ in pairs(pipe.fluidbox.get_fluid_system_contents(1)) do
+            if not fluid then
+              fluid = check
+            elseif fluid ~= check then
+              return -1
+            end
           end
         end
       end

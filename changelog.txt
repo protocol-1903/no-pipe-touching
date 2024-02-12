@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.7
+Date: ????
+  Changes:
+    - 
+  Bugfixes:
+    - Fixed naming when used with certain mods
+    - Fixed fast replacing with certian pipes
+---------------------------------------------------------------------------------------------------
 Version: 0.1.6
 Date: 2024-02-10
   Bugfixes:
