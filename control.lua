@@ -18,10 +18,10 @@ end
 
 ---------------------------------------------------------------------------------------------------
 -- find number of blocked entities based on the position and type of pipe
-local function findBlocked(entity, surface, skip)
+local function findBlocked(entity, surface, skip, fluid_check)
   log("find blocked")
 	local blocked = 0
-  local fluid
+  local fluidboxes = {}
   for i, offset in pairs({{0,-1}, {1,0}, {0,1}, {-1,0}}) do
     log("looking for blocking at" .. entity.position.x + offset[1] .. ", " .. entity.position.y + offset[2])
     if not skip or (entity.position.x + offset[1] ~= skip.x or entity.position.y + offset[2] ~= skip.y) then
@@ -33,15 +33,21 @@ local function findBlocked(entity, surface, skip)
       if type and type ~= getType(entity) then
         log("found blocking at" .. entity.position.x + offset[1] .. ", " .. entity.position.y + offset[2])
         blocked = blocked + 2^(i - 1)
-      else
+      elseif fluid_check then
         -- check fluid contents
         if pipe and pipe.fluidbox.get_fluid_system_contents(1) then
-          for check, _ in pairs(pipe.fluidbox.get_fluid_system_contents(1)) do
-            if not fluid then
-              fluid = check
-            elseif fluid ~= check then
-              return -1
+          log(1)
+          for fluid, _ in pairs(pipe.fluidbox.get_fluid_system_contents(1)) do
+            log(2)
+            for _, fluidbox in pairs(fluidboxes) do
+              log(3)
+              if fluid ~= fluidbox.fluid and pipe.fluidbox.get_fluid_system_id(1) ~= fluidbox.network then
+                log(3.1)
+                return -1
+              end
             end
+            log(4)
+            table.insert(fluidboxes, {fluid = pipe.fluidbox.get_fluid_system_contents(1), network = pipe.fluidbox.get_fluid_system_id(1)})
           end
         end
       end
@@ -102,10 +108,10 @@ local function updateAdjacent(position, surface, skip)
       local adj_blocked
       if skip then
         log("skip " .. position.x .. ", " .. position.y)
-        adj_blocked = findBlocked(adjacent_pipe, surface, position)
+        adj_blocked = findBlocked(adjacent_pipe, surface, position, false)
       else
         log("no skip")
-        adj_blocked = findBlocked(adjacent_pipe, surface, nil)
+        adj_blocked = findBlocked(adjacent_pipe, surface, nil, false)
       end
 
       -- update the pipe if something is different
@@ -156,7 +162,7 @@ script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_e
   local position = entity.position
 
   -- find adjacent pipes
-  local blocked = findBlocked(entity, surface, nil)
+  local blocked = findBlocked(entity, surface, nil, true)
 
   -- if different fluidboxes have different fluids, cancel construction
   if blocked == -1 then
@@ -183,6 +189,8 @@ script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_e
     return
   end
 
+  local fluidbox = entity.fluidbox[1]
+
   -- destroy the old entity
   if not entity.destroy() then return; end -- return if something breaks
   
@@ -192,7 +200,8 @@ script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_e
     position = position,
     force = force
   })
-  if pipe and event.player_index then pipe.last_user = event.player_index; end
+  if pipe and event.player_index then pipe.last_user = event.player_index end
+  if pipe and fluidbox then pipe.fluidbox[1] = fluidbox end
 end)
 
 ---------------------------------------------------------------------------------------------------
@@ -216,7 +225,7 @@ script.on_event({defines.events.on_cancelled_deconstruction}, function (event)
   updateAdjacent(position, surface, false)
 
   -- find adjacent pipes
-  local blocked = findBlocked(entity, surface, nil)
+  local blocked = findBlocked(entity, surface, nil, false)
 
   -- if nothing is blocked, return
   if blocked == 0 then return; end
