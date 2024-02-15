@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.7
+Date: 2024-02-15
+  Changes:
+    - Allows for mixed fluid networks to be extended if already created (How vanilla does mixed fluids)
+  Bugfixes:
+    - Fixed naming when used with Krastorio 2
+    - Fixed fast replacing with certian pipes
+    - Prevent pipes from creating mixed fluid networks
+---------------------------------------------------------------------------------------------------
 Version: 0.1.6
 Date: 2024-02-10
   Bugfixes:
