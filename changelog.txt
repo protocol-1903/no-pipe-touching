@@ -1,11 +1,14 @@
 ---------------------------------------------------------------------------------------------------
 Version: 0.1.9
-Date: ????
+Date: 2024-02-18
   Changes:
     - Filtered scripts to reduce overhead
+    - Removed some scripts to reduce overhead
     - Centralized portions of code to improve performance and reliability
     - When replacing pipes, if invalid placement, will cancel placement instead of removing the old pipe
     - Bots will (should) be more reliable when working with pipes
+    - You can no longer upgrade a pipe with the same pipe
+    - Ghost pipes now work properly
   Bugfixes:
     - Fixed a bug where sometimes updating a pipe would remove fluid
     - Fixed a bug that prevented some pipes from being connected

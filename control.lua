@@ -1,11 +1,8 @@
 ---------------------------------------------------------------------------------------------------
 -- get the type of pipe
 local function getType(entity)
-  -- if not pipe
-  if not entity then return end
   -- get name from ghost or normal
-  local name = entity.type == "entity-ghost" and entity.ghost_name or entity.type == "pipe" and entity.name
-	if not name then return end
+  local name = entity.type == "entity-ghost" and entity.ghost_name or entity.type == "pipe" and entity.name or "pipe"
   -- if npt
   if name:find("-npt") then return name:sub(1, -9)
   -- else
@@ -53,7 +50,7 @@ local function findBlocked(entity, type_entity, skip, fluid_check)
       -- find pipe (?)
       local pipe = entity.surface.find_entities_filtered({type = 'pipe', position = {entity.position.x + offset[1], entity.position.y + offset[2]}})[1]
       -- check pipe material
-      local type = getType(pipe)
+      local type = pipe and getType(pipe) or nil
       if type and type ~= getType(type_entity) then blocked = blocked + 2^(i - 1)
       elseif fluid_check then
         -- dont allow fluid networks to mix
@@ -145,15 +142,11 @@ local function log_event(event)
   }
 end
 
---------------------------------------------------------------------------------------------------- pre player mine
-script.on_event(defines.events.on_pre_player_mined_item, function (event)
-  -- log the event in case it is an upgrade
-  log_event(event)
-end, {{filter = "type", type = "pipe"}})
-
 
 --------------------------------------------------------------------------------------------------- player mine
 script.on_event(defines.events.on_player_mined_entity, function (event)
+  -- log the event in case it is an upgrade
+  log_event(event)
   event.buffer.clear()
   local entity = event.entity
   -- check if pipe, otherwise return
