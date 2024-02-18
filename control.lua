@@ -1,12 +1,12 @@
 -- get the type of pipe
 local function getType(entity)
-  log("get type")
+  -- log("get type")
   -- if not pipe
   if not entity then return; end
   -- get name from ghost or normal
   local name = entity.type == "entity-ghost" and entity.ghost_name or entity.type == "pipe" and entity.name
 	if not name then return; end
-  log(entity.type .. ": " .. name)
+  -- log(entity.type .. ": " .. name)
   -- if npt
   if name:find("-npt") then
     return name:sub(1, -9)
@@ -19,34 +19,34 @@ end
 ---------------------------------------------------------------------------------------------------
 -- find number of blocked entities based on the position and type of pipe
 local function findBlocked(entity, surface, skip, fluid_check)
-  log("find blocked")
+  -- log("find blocked")
 	local blocked = 0
   local fluidboxes = {}
   for i, offset in pairs({{0,-1}, {1,0}, {0,1}, {-1,0}}) do
-    log("looking for blocking at" .. entity.position.x + offset[1] .. ", " .. entity.position.y + offset[2])
+    -- log("looking for blocking at" .. entity.position.x + offset[1] .. ", " .. entity.position.y + offset[2])
     if not skip or (entity.position.x + offset[1] ~= skip.x or entity.position.y + offset[2] ~= skip.y) then
       -- find pipe (?)
       local pipe = surface.find_entities_filtered({type = 'pipe', position = {entity.position.x + offset[1], entity.position.y + offset[2]}})[1]
       -- check pipe material
-      log("found entity (?) at" .. entity.position.x + offset[1] .. ", " .. entity.position.y + offset[2])
+      -- log("found entity (?) at" .. entity.position.x + offset[1] .. ", " .. entity.position.y + offset[2])
       local type = getType(pipe)
       if type and type ~= getType(entity) then
-        log("found blocking at" .. entity.position.x + offset[1] .. ", " .. entity.position.y + offset[2])
+        -- log("found blocking at" .. entity.position.x + offset[1] .. ", " .. entity.position.y + offset[2])
         blocked = blocked + 2^(i - 1)
       elseif fluid_check then
         -- check fluid contents
         if pipe and pipe.fluidbox.get_fluid_system_contents(1) then
-          log(1)
+          -- log(1)
           for fluid, _ in pairs(pipe.fluidbox.get_fluid_system_contents(1)) do
-            log(2)
+            -- log(2)
             for _, fluidbox in pairs(fluidboxes) do
-              log(3)
+              -- log(3)
               if fluid ~= fluidbox.fluid and pipe.fluidbox.get_fluid_system_id(1) ~= fluidbox.network then
-                log(3.1)
+                -- log(3.1)
                 return -1
               end
             end
-            log(4)
+            -- log(4)
             table.insert(fluidboxes, {fluid = pipe.fluidbox.get_fluid_system_contents(1), network = pipe.fluidbox.get_fluid_system_id(1)})
           end
         end
@@ -98,25 +98,25 @@ end
 
 ---------------------------------------------------------------------------------------------------
 local function updateAdjacent(position, surface, skip)
-  log("update adjacent")
+  -- log("update adjacent")
   for o, offset in pairs({{0,-1}, {1,0}, {0,1}, {-1,0}}) do
     local adjacent_pipe = surface.find_entities_filtered({type = "pipe", position = {position.x + offset[1], position.y + offset[2]}})[1]
     if adjacent_pipe then
-      log("found adjacent at" .. position.x + offset[1] .. ", " .. position.y + offset[2])
+      -- log("found adjacent at" .. position.x + offset[1] .. ", " .. position.y + offset[2])
 
       -- find blocked
       local adj_blocked
       if skip then
-        log("skip " .. position.x .. ", " .. position.y)
+        -- log("skip " .. position.x .. ", " .. position.y)
         adj_blocked = findBlocked(adjacent_pipe, surface, position, false)
       else
-        log("no skip")
+        -- log("no skip")
         adj_blocked = findBlocked(adjacent_pipe, surface, nil, false)
       end
 
       -- update the pipe if something is different
       if adj_blocked ~= getPipeBlocked(adjacent_pipe) and not adjacent_pipe.to_be_deconstructed() and not adjacent_pipe.to_be_upgraded() then
-        log("creating new pipe")
+        -- log("creating new pipe")
         -- create some local variables
         local fluidbox = adjacent_pipe.fluidbox[1]
         local adj_position = adjacent_pipe.position
@@ -145,7 +145,7 @@ end
 
 ---------------------------------------------------------------------------------------------------
 script.on_event({defines.events.on_built_entity, defines.events.on_robot_built_entity}, function (event)
-  log("on place")
+  -- log("on place")
   local entity = event.created_entity
   
   -- check if pipe, otherwise return
@@ -206,7 +206,7 @@ end)
 
 ---------------------------------------------------------------------------------------------------
 script.on_event({defines.events.on_cancelled_deconstruction}, function (event)
-  log("on cancel deconstruct")
+  -- log("on cancel deconstruct")
   local entity = event.entity
   
   -- check if pipe, otherwise return
@@ -243,15 +243,15 @@ end)
 
 ---------------------------------------------------------------------------------------------------
 script.on_event({defines.events.on_player_mined_entity, defines.events.on_robot_mined_entity}, function (event)
-  log("on mined")
+  -- log("on mined")
   local entity = event.entity
   -- check if pipe, otherwise return
   if entity.type ~= "pipe" then return; end
-  log("destroy pipe")
+  -- log("destroy pipe")
 	local pipeType = getType(entity)
   -- check if valid, otherwise return
 	if not pipeType then return; end
-  log("updating adjacent")
+  -- log("updating adjacent")
   -- update adjacent pipes
   updateAdjacent(entity.position, entity.surface, true)
 end)
