@@ -142,7 +142,6 @@ local function log_event(event)
   }
 end
 
-
 --------------------------------------------------------------------------------------------------- player mine
 script.on_event(defines.events.on_player_mined_entity, function (event)
   -- log the event in case it is an upgrade
