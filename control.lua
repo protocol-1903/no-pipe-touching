@@ -2,7 +2,7 @@
 -- get the type of pipe
 local function getType(entity)
   -- get name from ghost or normal
-  local name = entity.type == "entity-ghost" and entity.ghost_name or entity.type == "pipe" and entity.name or "pipe"
+  local name = entity.type == "entity-ghost" and entity.ghost_name or entity.name
   -- if npt
   if name:find("-npt") then return name:sub(1, -9)
   -- else
@@ -129,6 +129,7 @@ local function updateAdjacent(position, surface, skip)
   end
 end
 
+---------------------------------------------------------------------------------------------------
 local function log_event(event)
   recent_tick = event.tick
   recent_event = {
@@ -141,6 +142,18 @@ local function log_event(event)
     fluidbox = #event.entity.fluidbox >= 1 and event.entity.fluidbox[1] or nil
   }
 end
+
+--------------------------------------------------------------------------------------------------- script mine
+script.on_event(defines.events.script_raised_destroy, function (event)
+  local entity = event.entity
+  -- check if pipe, otherwise return
+  if entity.type ~= "pipe" then return; end
+	local pipeType = getType(entity)
+  -- check if valid, otherwise return
+	if not pipeType then return; end
+  -- update adjacent pipes
+  updateAdjacent(entity.position, entity.surface, true)
+end, {{filter = "type", type = "pipe"}})
 
 --------------------------------------------------------------------------------------------------- player mine
 script.on_event(defines.events.on_player_mined_entity, function (event)
@@ -155,7 +168,7 @@ script.on_event(defines.events.on_player_mined_entity, function (event)
 	if not pipeType then return; end
   -- update adjacent pipes
   updateAdjacent(entity.position, entity.surface, true)
-end, {{filter = "type", type = "pipe"}, {filter = "ghost_type", type = "pipe"}})
+end, {{filter = "type", type = "pipe"}})
 
 --------------------------------------------------------------------------------------------------- robot mine
 script.on_event(defines.events.on_robot_mined_entity, function (event)
@@ -170,6 +183,27 @@ script.on_event(defines.events.on_robot_mined_entity, function (event)
 	if not pipeType then return; end
   -- update adjacent pipes
   updateAdjacent(entity.position, entity.surface, true)
+end, {{filter = "type", type = "pipe"}})
+
+--------------------------------------------------------------------------------------------------- script build
+script.on_event(defines.events.script_raised_built, function (event)
+  -- find adjacent pipes
+  local blocked = findBlocked(event.entity, event.entity, nil, true)
+  -- if different fluidboxes have different fluids, cancel construction
+  if blocked == -1 then
+    blockConstruction(event)
+    -- return so nothing else happens
+    return
+  end
+  -- put old item back into inventory
+  if recent_tick == event.tick then
+    putItBack(event)
+    recent_tick = nil
+  end
+  -- update adjacent pipes
+  updateAdjacent(event.entity.position, event.entity.surface, false)
+  -- create a new pipe
+  createNewPipe(event.entity, blocked)
 end, {{filter = "type", type = "pipe"}})
 
 --------------------------------------------------------------------------------------------------- player build
@@ -251,4 +285,17 @@ script.on_event(defines.events.on_pre_ghost_upgraded, function (event)
   end
 end, {{filter = "ghost_type", type = "pipe"}})
 
--- script.on_event({defines.events.on_player_setup_blueprint}, on_player_setup_blueprint)
+--------------------------------------------------------------------------------------------------- blueprint
+script.on_event({defines.events.on_player_setup_blueprint}, function (event)
+	local player = game.players[event.player_index]
+	local blueprint = player and player.blueprint_to_setup
+  -- if normally invalid
+	if not blueprint or not blueprint.valid_for_read then blueprint = player.cursor_stack end
+  -- if non existant, cancel
+  if not blueprint then return end
+  local entities = blueprint and blueprint.get_blueprint_entities()
+  if not entities then return; end
+  -- update entities
+  for i, entity in pairs(entities) do entity.name = getType(entity) end
+  blueprint.set_blueprint_entities(entities)
+end)

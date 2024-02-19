@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.10
+Date: 2024-02-19
+  Changes:
+    - Allow blueprint compatability by not using the mod's entities in blueprints
+    - Allow more mod compatability when using script_raise_built and script_raise_destroy
+  Bugfixes:
+    - Fixed an issue where pipes placed by other mods would not be updated
+---------------------------------------------------------------------------------------------------
 Version: 0.1.9
 Date: 2024-02-18
   Changes:
