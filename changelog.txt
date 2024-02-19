@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------------------------------
 Version: 0.1.10
-Date: ????
+Date: 2024-02-19
   Changes:
     - Allow blueprint compatability by not using the mod's entities in blueprints
     - Allow more mod compatability when using script_raise_built and script_raise_destroy
