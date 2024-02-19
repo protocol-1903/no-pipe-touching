@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------- get type
 -- get the type of pipe
 local function getType(entity)
   -- get name from ghost or normal
@@ -9,7 +9,7 @@ local function getType(entity)
   else return name end
 end
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------- get id
 -- check the amount of blocked for a pipe entity, based on number
 local function getID(entity)
   -- return if nil
@@ -23,7 +23,7 @@ local function getID(entity)
   else return name end
 end
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------- you cant do that
 -- they did something illegal. or tried to.
 local function youCantDoThat(player, position)
   if not player then return end
@@ -32,7 +32,7 @@ local function youCantDoThat(player, position)
   player.play_sound{path = "utility/cannot_build", position = position}
 end
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------- pit it back
 -- a bit like time travel
 local function putItBack(event)
   if event.player_index then
@@ -40,7 +40,7 @@ local function putItBack(event)
   elseif event.robot then event.robot.get_inventory(defines.inventory.robot_cargo).insert({name = getType(event.created_entity)}) end
 end
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------- find blocked
 -- find number of blocked entities based on the position and type of pipe
 local function findBlocked(entity, type_entity, skip, fluid_check)
 	local blocked = 0
@@ -66,7 +66,7 @@ local function findBlocked(entity, type_entity, skip, fluid_check)
   return blocked
 end
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------- create new pipe
 local function createNewPipe(entity, blocked)
   local surface = entity.surface
   local position = entity.position
@@ -88,7 +88,7 @@ end
 local recent_event
 local recent_tick
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------- block construction
 local function blockConstruction(event)
   if event.robot then putItBack(event)
   elseif not event.target then -- player
@@ -113,7 +113,7 @@ local function blockConstruction(event)
   end
 end
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------- update adjacent pipes
 local function updateAdjacent(position, surface, skip)
   for o, offset in pairs({{0,-1}, {1,0}, {0,1}, {-1,0}}) do
     local adjacent_pipe = surface.find_entities_filtered({type = "pipe", position = {position.x + offset[1], position.y + offset[2]}})[1]
@@ -129,7 +129,7 @@ local function updateAdjacent(position, surface, skip)
   end
 end
 
----------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------- log event
 local function log_event(event)
   recent_tick = event.tick
   recent_event = {
