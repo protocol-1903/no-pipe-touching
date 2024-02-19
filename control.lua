@@ -14,7 +14,7 @@ end
 local function getID(entity)
   -- return if nil
   if not entity then return; end
-  -- get name from ghost or normal
+  -- get name
   local name = entity.type == "entity-ghost" and entity.ghost_name or entity.type == "pipe" and entity.name
 	if not name then return; end
   -- if npt
