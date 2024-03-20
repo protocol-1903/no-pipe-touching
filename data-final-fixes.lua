@@ -13,11 +13,8 @@ for p, prototype in pairs(data.raw.pipe) do
     for i = 0, 14 do
       local pip = util.table.deepcopy(prototype)
 			pip.name = string.format("%s-npt[%02d]", p, i)
-			pip.localised_name = {"item-name." .. p}
-      if p == "kr-steel-pipe" and mods["Krastorio2"] then
-        pip.localised_name = {"item-name.steel-pipe"}
-      end
-			pip.localised_description = {"item-description." .. p}
+			pip.localised_name = {"entity-name." .. p}
+			pip.localised_description = {"entity-description." .. p}
 			pip.build_sound = nil
       pip.placeable_by = prototype.placeable_by
       pip.fluid_box.pipe_connections = {}
