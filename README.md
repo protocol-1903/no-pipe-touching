@@ -1,16 +1,19 @@
+[![](https://img.shields.io/badge/dynamic/json?color=orange&label=Factorio&query=downloads_count&suffix=%20downloads&url=https%3A%2F%2Fmods.factorio.com%2Fapi%2Fmods%2Fno-pipe-touching&style=for-the-badge)](https://mods.factorio.com/mod/no-pipe-touching) [![](https://img.shields.io/badge/Discord-Community-blue?style=for-the-badge)](https://discord.gg/K3fXMGVc4z) [![](https://img.shields.io/github/issues/protocol-1903/no-pipe-touching?label=Bug%20Reports&style=for-the-badge)](https://github.com/protocol-1903/no-pipe-touching/issues) [![](https://img.shields.io/github/issues-pr/protocol-1903/no-pipe-touching?label=Pull%20Requests&style=for-the-badge)](https://github.com/protocol_1903/no-pipe-touching/pulls)
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/B0B7145X5R)
+
 # What?
-This little mod makes pipes of different materials unable to connect to each other. It doesn't add any pipes on its own, so it's only useful if combined with a mod that adds pipes.
+NPT allows pipes to only connect to pipes of the same material, including underground pipes! Pipe weaving is now possible!
+Please report any bugs here or on [github](https://github.com/protocol-1903/no-pipe-touching)
 
 # Compatability
-- This mod is 100% compatible with bots and ghosts. No special interactions on your end. The mod does it all.
-- Should be compatible with any mod that adds unique pipes, but is only tested with bobs logistics.
+- Should be compatible with any mod that adds unique pipes, if something breaks, let me know
 
-# Plans
-- Blueprint compatibility, so anything you make with the mod is usable without the mod
-
-# Known Bugs
-- Pipes will sometimes be removed when messing with mixing fluids
-- nothing else, for now
+## Known compatability:
+- Pymods
+- RGB Pipes
 
 # History
-This is a revamp of [Incompatible Pipes](https://mods.factorio.com/mod/incompatible-pipes) by sticklord. It is rebuilt from the ground up for 1.1. It is not finished, so there are guaranteed to be bugs. Please report any bugs here or on [github](https://github.com/protocol-1903/no-pipe-touching)
+This is a complete rebuild of the 1.1 version using connection_category, a new feature in the 2.0 modding API. Old versions used scripting and a ton of filler entities. The old code won't be useful... at least here :)
+
+The old version is a revamp of [Incompatible Pipes](https://mods.factorio.com/mod/incompatible-pipes) by sticklord. It was rebuilt from the ground up for 1.1.
