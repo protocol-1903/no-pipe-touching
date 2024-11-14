@@ -1,4 +1,66 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.5
+Date: ????
+  Changes:
+    - Added external tools to assist with custom support, currently  only used for AFH
+  Bugfixes:
+    - Added support for Advanced Fluid Handling
+    - Fixed a bug where pipes would connect vertically but not horizontally (i have no idea how that happens lmao)
+---------------------------------------------------------------------------------------------------
+Version: 1.1.4
+Date: 2024-11-11
+  Changes:
+    - Upgraded logic to better handle modded pipes and non-conforming pipe entities
+  Bugfixes:
+    - Fixed an issue where corrected RGB Pipes locale would apply even without the mod installed
+    - Fixed an issue where pipes added by Extended Range were not modified to only connect to the same pipes
+    - Fixed an issue where pipes added by 5Dims logistics were not modified to only connect to the same pipes
+---------------------------------------------------------------------------------------------------
+Version: 1.1.3
+Date: 2024-10-30
+  Bugfixes:
+    - Fixed an issue where pipe-to-grounds would not connect to their respective pipes (i have no idea how that one slipped by)
+---------------------------------------------------------------------------------------------------
+Version: 1.1.2
+Date: 2024-10-30
+  Bugfixes:
+    - Fixed infinity pipe not connecting to pipes
+---------------------------------------------------------------------------------------------------
+Version: 1.1.1
+Date: 2024-10-29
+  Bugfixes:
+    - Custom compatibility for RGBPipes by @robot256, with new entity descriptions
+    - Fixed a crash that may be caused when loaded with certain mods
+---------------------------------------------------------------------------------------------------
+Version: 1.1.0
+Date: 2024-10-28
+  Features:
+    - Pipe braiding! You can now braid your underground pipes too!
+  Changes:
+    - Reduced runtime and data stage overhead
+    - Updated thumbnail and description
+---------------------------------------------------------------------------------------------------
+Version: 1.0.0
+Date: 2024-10-24
+  Changes:
+    - Fixed for 2.0
+---------------------------------------------------------------------------------------------------
+Version: 0.1.14
+Date: 2024-06-30
+  Bugfixes:
+    - Fixed an issue where robots, after upgrading pipes, would return with a full stack of pipe
+---------------------------------------------------------------------------------------------------
+Version: 0.1.13
+Date: 2024-03-22
+  Bugfixes:
+    - Fixed an issue with non-returning pipes
+    - Fixed an issue with robots and specific uprgade queues
+    - Fixed a bug that would sometimes create mixed fluid systems
+    - Fixed an issue where robots would not retain items after upgrading
+  Changes:
+    - Simplified fast replacement code
+    - Removed code pertaining to robots building ghosts
+---------------------------------------------------------------------------------------------------
 Version: 0.1.12
 Date: 2024-03-20
   Changes:
