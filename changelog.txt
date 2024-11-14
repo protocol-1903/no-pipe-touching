@@ -1,11 +1,8 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.5
 Date: ????
-  Changes:
-    - Added external tools to assist with custom support, currently  only used for AFH
   Bugfixes:
     - Added support for Advanced Fluid Handling
-    - Fixed a bug where pipes would connect vertically but not horizontally (i have no idea how that happens lmao)
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.4
 Date: 2024-11-11
