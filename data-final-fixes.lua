@@ -80,7 +80,7 @@ for _, prototype_category in pairs(prototypes) do
             end
             if not found then new_list[#new_list + 1] = category end
           end
-          if pipe_connection.connection_type == "underground" then pipe_connection.connection_category = "nil" end
+          if pipe_connection.connection_type == "underground" then pipe_connection.connection_category = nil end
           if mods["RGBPipes"] and prototype_category == "infinity-pipe" then
             new_list[#new_list + 1] = "black-pipe"
           end
@@ -95,7 +95,6 @@ end
 
 for p, pipe in pairs(data.raw.pipe) do
   if not p:find("tomwub") then
-    log("pipe-fixes: " .. p)
     for i, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
       -- compat for RGBPipes
       if mods["RGBPipes"] then
@@ -123,7 +122,6 @@ for p, pipe in pairs(data.raw.pipe) do
     if not p:find("tomwub") then
       for u, underground in pairs(data.raw["pipe-to-ground"]) do
         if u:sub(1,-11) == p then
-          log("normal-fixes: " .. u)
           for i, pipe_connection in pairs(underground.fluid_box.pipe_connections) do
             if pipe_connection.connection_type ~= "underground" then
               pipe_connection.connection_category = table.deepcopy(pipe.fluid_box.pipe_connections[1].connection_category)
@@ -211,8 +209,8 @@ local afh_pipes = {
 
 -- check for other tyoes if underground pipes
 for u, underground in pairs(data.raw["pipe-to-ground"]) do
-  if afh_pipes[u] or u:find("underground-cross-") or u:find("underground-t-") or u:find("underground-i-") then
-    log("afh-fixes: " .. u)
+  -- if afh_pipes[u] or u:find("underground-cross-") or u:find("underground-t-") or u:find("underground-i-") then
+  if false then
     -- handle advanced fluid handling pipes
     for _, pipe_connection in pairs(underground.fluid_box.pipe_connections) do
       if pipe_connection.connection_type ~= "underground" then
@@ -234,7 +232,6 @@ for u, underground in pairs(data.raw["pipe-to-ground"]) do
       end
     end
   elseif not underground.solved_by_npt then
-    log("other-fixes: " .. u)
     for _, pipe_connection in pairs(underground.fluid_box.pipe_connections) do
       if pipe_connection.connection_type ~= "underground" then
         -- generic pipe connection, should connect to everything
