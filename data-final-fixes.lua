@@ -1,4 +1,4 @@
-local categories = {}
+local categories = { "default" }
 local pipes = {}
 
 local blacklist = {
@@ -94,7 +94,7 @@ end
 
 
 for p, pipe in pairs(data.raw.pipe) do
-  if not p:find("tomwub") then
+  if not p:find("tomwub") and not (pipe.npt_compat ~= nil and pipe.npt_compat.ignore) then
     for i, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
       -- compat for RGBPipes
       if mods["RGBPipes"] then
@@ -135,6 +135,16 @@ for p, pipe in pairs(data.raw.pipe) do
       end
       ::continue::
     end
+  elseif  pipe.npt_compat and pipe.npt_compat.ignore then
+    for i, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
+      if pipe_connection.connection_category == nil then
+        pipe_connection.connection_category = {}
+      -- if string, add to new table
+      elseif type(pipe_connection.connection_category) == "string" then
+        pipe_connection.connection_category = { pipe_connection.connection_category }
+      end
+      pipe_connection.connection_category[#pipe_connection.connection_category + 1] = "default"
+    end
   end
 end
 
@@ -156,61 +166,9 @@ if mods["RGBPipes"] then
   data.raw["pipe-to-ground"]["pipe-to-ground"].localised_description = "(White) Does not connect to colored pipes, only machines"
 end
 
-local afh_pipes = {
-  ["one-to-one-forward-pipe"] = true,
-  ["one-to-one-reverse-pipe"] = true,
-  ["one-to-one-left-pipe"] = true,
-  ["one-to-one-right-pipe"] = true,
-  ["one-to-two-parallel-pipe"] = true,
-  ["one-to-two-perpendicular-pipe"] = true,
-  ["one-to-two-parallel-secondary-pipe"] = true,
-  ["one-to-two-perpendicular-secondary-pipe"] = true,
-  ["one-to-two-L-FL-pipe"] = true,
-  ["one-to-two-L-FR-pipe"] = true,
-  ["one-to-two-L-RL-pipe"] = true,
-  ["one-to-two-L-RR-pipe"] = true,
-  ["one-to-three-forward-pipe"] = true,
-  ["one-to-three-reverse-pipe"] = true,
-  ["one-to-three-left-pipe"] = true,
-  ["one-to-three-right-pipe"] = true,
-  ["one-to-one-forward-t2-pipe"] = true,
-  ["one-to-one-reverse-t2-pipe"] = true,
-  ["one-to-one-left-t2-pipe"] = true,
-  ["one-to-one-right-t2-pipe"] = true,
-  ["one-to-two-parallel-t2-pipe"] = true,
-  ["one-to-two-perpendicular-t2-pipe"] = true,
-  ["one-to-two-parallel-secondary-t2-pipe"] = true,
-  ["one-to-two-perpendicular-secondary-t2-pipe"] = true,
-  ["one-to-two-L-FL-t2-pipe"] = true,
-  ["one-to-two-L-FR-t2-pipe"] = true,
-  ["one-to-two-L-RL-t2-pipe"] = true,
-  ["one-to-two-L-RR-t2-pipe"] = true,
-  ["one-to-three-forward-t2-pipe"] = true,
-  ["one-to-three-reverse-t2-pipe"] = true,
-  ["one-to-three-left-t2-pipe"] = true,
-  ["one-to-three-right-t2-pipe"] = true,
-  ["one-to-one-forward-t3-pipe"] = true,
-  ["one-to-one-reverse-t3-pipe"] = true,
-  ["one-to-one-left-t3-pipe"] = true,
-  ["one-to-one-right-t3-pipe"] = true,
-  ["one-to-two-parallel-t3-pipe"] = true,
-  ["one-to-two-perpendicular-t3-pipe"] = true,
-  ["one-to-two-parallel-secondary-t3-pipe"] = true,
-  ["one-to-two-perpendicular-secondary-t3-pipe"] = true,
-  ["one-to-two-L-FL-t3-pipe"] = true,
-  ["one-to-two-L-FR-t3-pipe"] = true,
-  ["one-to-two-L-RL-t3-pipe"] = true,
-  ["one-to-two-L-RR-t3-pipe"] = true,
-  ["one-to-three-forward-t3-pipe"] = true,
-  ["one-to-three-reverse-t3-pipe"] = true,
-  ["one-to-three-left-t3-pipe"] = true,
-  ["one-to-three-right-t3-pipe"] = true,
-}
-
 -- check for other tyoes if underground pipes
 for u, underground in pairs(data.raw["pipe-to-ground"]) do
-  -- if afh_pipes[u] or u:find("underground-cross-") or u:find("underground-t-") or u:find("underground-i-") then
-  if false then
+  if underground.npt_compat and underground.npt_compat.mod == "afh" then
     -- handle advanced fluid handling pipes
     for _, pipe_connection in pairs(underground.fluid_box.pipe_connections) do
       if pipe_connection.connection_type ~= "underground" then
@@ -223,15 +181,11 @@ for u, underground in pairs(data.raw["pipe-to-ground"]) do
         for _, pipe_category in pairs(pipes) do
           pipe_connection.connection_category[#pipe_connection.connection_category+1] = pipe_category
         end
-      elseif pipe_connection.connection_category == "underground" and u:find("t3-pipe") then
-        pipe_connection.connection_category = "t3-pipe"
-      elseif pipe_connection.connection_category == "underground" and u:find("t2-pipe") then
-        pipe_connection.connection_category = "t2-pipe"
       else
-        pipe_connection.connection_category = "t1-pipe"
+        pipe_connection.connection_category = "afh-underground-" .. underground.npt_compat.tier
       end
     end
-  elseif not underground.solved_by_npt then
+  elseif not underground.solved_by_npt and not (underground.npt_compat and underground.npt_compat.ignore) then
     for _, pipe_connection in pairs(underground.fluid_box.pipe_connections) do
       if pipe_connection.connection_type ~= "underground" then
         -- generic pipe connection, should connect to everything
@@ -247,9 +201,8 @@ for u, underground in pairs(data.raw["pipe-to-ground"]) do
         pipe_connection.connection_category = u
       end
     end
-  elseif underground.solved_by_npt then
-    underground.solved_by_npt = nil
   end
+  underground.solved_by_npt = nil
 end
 
 -- for p, pipe_connection in pairs(data.raw.pipe.pipe.fluid_box.pipe_connections, data.raw["pipe-to-ground"]["pipe-to-ground"].fluid_box.pipe_connections) do
