@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.7
+Date: 2024-11-19
+  Bugfixes:
+    - Added proper support for Advanced Fluid Handling. Now you can weave those pipes in peace!
+---------------------------------------------------------------------------------------------------
 Version: 1.1.6
 Date: 2024-11-17
   Changes:

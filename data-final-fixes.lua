@@ -80,11 +80,14 @@ for _, prototype_category in pairs(prototypes) do
             end
             if not found then new_list[#new_list + 1] = category end
           end
-          if pipe_connection.connection_type == "underground" then pipe_connection.connection_category = nil end
           if mods["RGBPipes"] and prototype_category == "infinity-pipe" then
             new_list[#new_list + 1] = "black-pipe"
           end
           pipe_connection.connection_category = new_list
+          if pipe_connection.connection_type == "underground" then pipe_connection.connection_category = "default" end
+          if pipe_connection.connection_type == "underground" and prototype.npt_compat and prototype.npt_compat.mod == "afh" then
+            pipe_connection.connection_category = "afh-underground-" .. prototype.npt_compat.tier
+          end
         end
       end
     end
