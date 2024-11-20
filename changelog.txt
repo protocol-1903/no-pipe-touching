@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.8
+Date: 2024-11-20
+  Changes:
+    - Changed default behaviour to make unknown entities with underground connections connect to pipe to grounds from the base game
+  Bugfixes:
+    - Fixed an issue with Pipe Plus not working properly when NPT is installed
+---------------------------------------------------------------------------------------------------
 Version: 1.1.7
 Date: 2024-11-19
   Bugfixes:

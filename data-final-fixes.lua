@@ -84,7 +84,7 @@ for _, prototype_category in pairs(prototypes) do
             new_list[#new_list + 1] = "black-pipe"
           end
           pipe_connection.connection_category = new_list
-          if pipe_connection.connection_type == "underground" then pipe_connection.connection_category = "default" end
+          if pipe_connection.connection_type == "underground" then pipe_connection.connection_category = "pipe-to-ground" end
           if pipe_connection.connection_type == "underground" and prototype.npt_compat and prototype.npt_compat.mod == "afh" then
             pipe_connection.connection_category = "afh-underground-" .. prototype.npt_compat.tier
           end
@@ -201,7 +201,7 @@ for u, underground in pairs(data.raw["pipe-to-ground"]) do
           pipe_connection.connection_category[#pipe_connection.connection_category+1] = pipe_category
         end
       else -- type is underground
-        pipe_connection.connection_category = u
+        pipe_connection.connection_category = "pipe-to-ground"
       end
     end
   end
