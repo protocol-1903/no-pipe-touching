@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.9
+Date: 2024-11-20
+  Changes:
+    - Updated description and added optional dependencies to show possible pipe mod addons
+---------------------------------------------------------------------------------------------------
 Version: 1.1.8
 Date: 2024-11-20
   Changes:
