@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.10
+Date: 2024-11-28
+  Changes:
+    - Added proper compatability for Color Coded Pipes
+    - Added basic external compatability, read mod page for more info
+  Bugfixes:
+    - Removed unwanted interactions when Color Coded Pipes is installed
+    - Fixed an issue where more than 64 connection categories would crash the game (thanks boskid)
+---------------------------------------------------------------------------------------------------
 Version: 1.1.9
 Date: 2024-11-20
   Changes:
