@@ -1,6 +1,6 @@
 {
   "name": "no-pipe-touching",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "title": "No Pipe Touching 2.0",
   "description": "Allows you to place pipes of different materials next to each other without them connecting. Designed as a less fancy alternative to advanced fluid handling, without the recipe complexity of flow control.\nYOU NEED ANOTHER MOD TO ADD PIPES FOR THIS MOD TO DO ANYTHING",
   "author": "protocol_1903",

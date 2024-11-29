@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.11
+Date: 2024-11-29
+  Bugfixes:
+    - Fixed an issue where Color Coded Pipes would not connect to machines
+  Features:
+    - Added override and override_underground prototype options
+---------------------------------------------------------------------------------------------------
 Version: 1.1.10
 Date: 2024-11-28
   Changes:

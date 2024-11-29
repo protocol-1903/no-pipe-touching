@@ -6,14 +6,49 @@ local blacklist = {
   ["4-to-4-pipe"] = true
 }
 
+if mods["RGBPipes"] then
+  categories = {
+    "default",
+    "red-pipe-machine-connection",
+    "yellow-pipe-machine-connection",
+    "green-pipe-machine-connection",
+    "teal-pipe-machine-connection",
+    "blue-pipe-machine-connection",
+    "purple-pipe-machine-connection"
+  }
+end
+
 -- collect pipe types
-for p, _ in pairs(data.raw.pipe) do
-  if p == "red-pipe" or p == "yellow-pipe" or p == "green-pipe" or p == "teal-pipe" or p == "blue-pipe" or p == "purple-pipe" then
-    categories[#categories+1] = p .. "-machine-connection"
-  elseif not blacklist[p] then
-    categories[#categories+1] = p
+for p, pipe in pairs(data.raw.pipe) do
+  if pipe.npt_compat and pipe.npt_compat.tag then
+    pipes[#pipes+1] = pipe.npt_compat.mod .. "-" .. pipe.npt_compat.tag
+    if not blacklist[p] then
+      categories[#categories+1] = pipe.npt_compat.mod .. "-" .. pipe.npt_compat.tag
+    end
+  elseif pipe.npt_compat and pipe.npt_compat.override then
+    pipes[#pipes+1] = pipe.npt_compat.override
+    if not blacklist[p] then
+      categories[#categories+1] = pipe.npt_compat.override
+    end
+  elseif not pipe.npt_compat or not pipe.npt_compat.ignore then
+    pipes[#pipes+1] = p
+    if not blacklist[p] then
+      categories[#categories+1] = p
+    end
   end
-  pipes[#pipes+1] = p
+end
+
+-- do after pipe category collection to reduce reduntant categories
+if mods["Flow Control"] then
+  data.raw["storage-tank"]["pipe-junction"].npt_compat = {override = "pipe"}
+  data.raw["storage-tank"]["pipe-elbow"].npt_compat = {override = "pipe"}
+  data.raw["storage-tank"]["pipe-straight"].npt_compat = {override = "pipe"}
+end
+
+-- do after pipe category collection to reduce reduntant categories
+if mods["pipe_plus"] then
+  data.raw["pipe-to-ground"]["pipe-to-ground-2"].npt_compat = {override = "pipe", override_underground = "pipe-to-ground"}
+  data.raw["pipe-to-ground"]["pipe-to-ground-3"].npt_compat = {override = "pipe", override_underground = "pipe-to-ground"}
 end
 
 -- all prototypes with fluidboxes
@@ -84,10 +119,16 @@ for _, prototype_category in pairs(prototypes) do
             pipe_connection.connection_category = new_list
             if pipe_connection.connection_type == "underground" then pipe_connection.connection_category = "pipe-to-ground" end
           else --npt compat of some variety
-            if prototype.npt_compat.tag ~= nil then
+            if prototype.npt_compat.tag then
               pipe_connection.connection_category = { prototype.npt_compat.mod .. "-" .. prototype.npt_compat.tag }
             elseif prototype.npt_compat.mod == "afh" then
               pipe_connection.connection_category = "afh-underground-" .. prototype.npt_compat.tier
+            elseif prototype.npt_compat.override or prototype.npt_compat.override_underground then
+              if pipe_connection.connection_type ~= "underground" then
+                pipe_connection.connection_category = prototype.npt_compat.override or nil
+              else
+                pipe_connection.connection_category = prototype.npt_compat.override_underground or nil
+              end
             end
             -- otherwise, ignore
           end
@@ -103,7 +144,7 @@ end
 for p, pipe in pairs(data.raw.pipe) do
   if not p:find("tomwub") and pipe.npt_compat == nil then
     for i, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
-      -- clear old connection_categories
+      
       pipe_connection.connection_category = { p }
 
       if mods["RGBPipes"] and (p == "red-pipe" or p == "yellow-pipe" or p == "green-pipe" or p == "teal-pipe" or p == "blue-pipe" or p == "purple-pipe") then
@@ -138,7 +179,7 @@ for p, pipe in pairs(data.raw.pipe) do
       end
       ::continue::
     end
-  elseif pipe.npt_compat ~= nil and pipe.npt_compat.ignore then
+  elseif pipe.npt_compat and pipe.npt_compat.ignore then
     for i, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
       if pipe_connection.connection_category == nil then
         pipe_connection.connection_category = {}
@@ -148,9 +189,17 @@ for p, pipe in pairs(data.raw.pipe) do
       end
       pipe_connection.connection_category[#pipe_connection.connection_category + 1] = "default"
     end
-  elseif pipe.npt_compat ~= nil and pipe.npt_compat.tag ~= nil then
-    for i, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
+  elseif pipe.npt_compat and pipe.npt_compat.tag then
+    for _, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
       pipe_connection.connection_category = { pipe.npt_compat.mod .. "-" .. pipe.npt_compat.tag }
+    end
+  elseif pipe.npt_compat and (pipe.npt_compat.override or pipe.npt_compat.override_underground) then
+    for _, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
+      if pipe_connection.connection_type ~= "underground" then
+        pipe_connection.connection_category = pipe.npt_compat.override or nil
+      else
+        pipe_connection.connection_category = pipe.npt_compat.override_underground or nil
+      end
     end
   end
   pipe.npt_compat = nil
@@ -175,7 +224,7 @@ if mods["RGBPipes"] then
 end
 -- check for other tyoes if underground pipes
 for u, underground in pairs(data.raw["pipe-to-ground"]) do
-  if underground.npt_compat ~= nil and underground.npt_compat.mod == "afh" then
+  if underground.npt_compat and underground.npt_compat.mod == "afh" then
     -- handle advanced fluid handling pipes
     for _, pipe_connection in pairs(underground.fluid_box.pipe_connections) do
       if pipe_connection.connection_type ~= "underground" then
@@ -192,10 +241,18 @@ for u, underground in pairs(data.raw["pipe-to-ground"]) do
         pipe_connection.connection_category = "afh-underground-" .. underground.npt_compat.tier
       end
     end
-  elseif underground.npt_compat ~= nil and underground.npt_compat.tag ~= nil then
+  elseif underground.npt_compat and underground.npt_compat.tag then
     -- handle specific compatability
     for _, pipe_connection in pairs(underground.fluid_box.pipe_connections) do
       pipe_connection.connection_category = underground.npt_compat.mod .. "-" .. underground.npt_compat.tag
+    end
+  elseif underground.npt_compat and (underground.npt_compat.override or underground.npt_compat.override_underground) then
+    for _, pipe_connection in pairs(underground.fluid_box.pipe_connections) do
+      if pipe_connection.connection_type ~= "underground" then
+        pipe_connection.connection_category = underground.npt_compat.override or nil
+      else
+        pipe_connection.connection_category = underground.npt_compat.override_underground or nil
+      end
     end
   elseif not underground.solved_by_npt and not (underground.npt_compat and underground.npt_compat.ignore) then
     for _, pipe_connection in pairs(underground.fluid_box.pipe_connections) do
