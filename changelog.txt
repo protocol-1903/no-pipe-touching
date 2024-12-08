@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.12
+Date: 2024-12-08
+  Changes:
+    - Optimized startup logic, speeding up load times.
+    - Changed description to better describe the use case of this mod.
+---------------------------------------------------------------------------------------------------
 Version: 1.1.11
 Date: 2024-11-29
   Bugfixes:

@@ -25,11 +25,6 @@ for p, pipe in pairs(data.raw.pipe) do
     if not blacklist[p] then
       categories[#categories+1] = pipe.npt_compat.mod .. "-" .. pipe.npt_compat.tag
     end
-  elseif pipe.npt_compat and pipe.npt_compat.override then
-    pipes[#pipes+1] = pipe.npt_compat.override
-    if not blacklist[p] then
-      categories[#categories+1] = pipe.npt_compat.override
-    end
   elseif not pipe.npt_compat or not pipe.npt_compat.ignore then
     pipes[#pipes+1] = p
     if not blacklist[p] then
