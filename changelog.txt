@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.13
+Date: 2025-01-28
+  Changes:
+    - Forced fluidboxes with a filter to not connect to pipes by default. Will probably break things
+  Bugfixes:
+    - Fixed fusion and coolant connections connecting to pipes
+---------------------------------------------------------------------------------------------------
 Version: 1.1.12
 Date: 2024-12-08
   Changes:

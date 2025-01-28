@@ -91,7 +91,7 @@ for _, prototype_category in pairs(prototypes) do
 
     -- change!
     for f, fluid_box in pairs(fluid_boxes) do
-      if type(fluid_box) == "table" then
+      if type(fluid_box) == "table" and not fluid_box.filter then
         for _, pipe_connection in pairs(fluid_box.pipe_connections or {}) do
           if prototype.npt_compat == nil then
             local connection_category = {}
@@ -137,7 +137,7 @@ end
 
 
 for p, pipe in pairs(data.raw.pipe) do
-  if not p:find("tomwub") and pipe.npt_compat == nil then
+  if pipe.npt_compat == nil then
     for i, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
       
       pipe_connection.connection_category = { p }
@@ -158,22 +158,20 @@ for p, pipe in pairs(data.raw.pipe) do
         }
       end
     end
-    if not p:find("tomwub") then
-      for u, underground in pairs(data.raw["pipe-to-ground"]) do
-        if u:sub(1,-11) == p then
-          for i, pipe_connection in pairs(underground.fluid_box.pipe_connections) do
-            if pipe_connection.connection_type ~= "underground" then
-              pipe_connection.connection_category = table.deepcopy(pipe.fluid_box.pipe_connections[1].connection_category)
-            elseif pipe_connection.connection_type == "underground" then
-              pipe_connection.connection_category = u
-            end
+    for u, underground in pairs(data.raw["pipe-to-ground"]) do
+      if u:sub(1,-11) == p then
+        for i, pipe_connection in pairs(underground.fluid_box.pipe_connections) do
+          if pipe_connection.connection_type ~= "underground" then
+            pipe_connection.connection_category = table.deepcopy(pipe.fluid_box.pipe_connections[1].connection_category)
+          elseif pipe_connection.connection_type == "underground" then
+            pipe_connection.connection_category = u
           end
-          underground.solved_by_npt = true
-          goto continue
         end
+        underground.solved_by_npt = true
+        goto continue
       end
-      ::continue::
     end
+    ::continue::
   elseif pipe.npt_compat and pipe.npt_compat.ignore then
     for i, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
       if pipe_connection.connection_category == nil then
@@ -266,6 +264,8 @@ for u, underground in pairs(data.raw["pipe-to-ground"]) do
       end
     end
   end
-  underground.solved_by_npt = nil
-  underground.npt_compat = nil
+    underground.solved_by_npt = nil
+  if not mods["the-one-mod-with-underground-bits"] then
+    underground.npt_compat = nil
+  end
 end
