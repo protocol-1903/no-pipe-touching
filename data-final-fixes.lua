@@ -18,6 +18,17 @@ if mods["RGBPipes"] then
   }
 end
 
+local fluid_blacklist = {
+  ["fusion-plasma"] = true
+}
+
+for f, fluid in pairs(data.raw.fluid) do
+  if fluid.npt_compat and fluid.npt_compat.blacklist then
+    fluid_blacklist[f] = true
+  end
+  fluid.npt_compat = nil
+end
+
 -- collect pipe types
 for p, pipe in pairs(data.raw.pipe) do
   if pipe.npt_compat and pipe.npt_compat.tag then
@@ -91,7 +102,7 @@ for _, prototype_category in pairs(prototypes) do
 
     -- change!
     for f, fluid_box in pairs(fluid_boxes) do
-      if type(fluid_box) == "table" and not fluid_box.filter then
+      if type(fluid_box) == "table" and not fluid_blacklist[fluid_box.filter] then
         for _, pipe_connection in pairs(fluid_box.pipe_connections or {}) do
           if prototype.npt_compat == nil then
             local connection_category = {}

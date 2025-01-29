@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.14
+Date: 2025-01-29
+  Features:
+    - Added external compatability for mods to blacklist changes to fluidboxes with a specific fluid filter
+  Changes:
+    - Updated internal logic to only check for blacklisted fluidbox filters
+  Bugfixes:
+    - Fixed an issue where any fluidbox with a filter would not connect to any pipes
+---------------------------------------------------------------------------------------------------
 Version: 1.1.13
 Date: 2025-01-28
   Changes:
