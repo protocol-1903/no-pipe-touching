@@ -1,8 +1,15 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.15
+Date: 2025-03-12
+  Changes:
+    - Improved logic for plasma connections, as well as further support for plasma related entities
+  Compatibility:
+    - Added full compatibility for Plasma Ducts
+---------------------------------------------------------------------------------------------------
 Version: 1.1.14
 Date: 2025-01-29
   Features:
-    - Added external compatability for mods to blacklist changes to fluidboxes with a specific fluid filter
+    - Added external compatibility for mods to blacklist changes to fluidboxes with a specific fluid filter
   Changes:
     - Updated internal logic to only check for blacklisted fluidbox filters
   Bugfixes:
@@ -31,8 +38,8 @@ Date: 2024-11-29
 Version: 1.1.10
 Date: 2024-11-28
   Changes:
-    - Added proper compatability for Color Coded Pipes
-    - Added basic external compatability, read mod page for more info
+    - Added proper compatibility for Color Coded Pipes
+    - Added basic external compatibility, read mod page for more info
   Bugfixes:
     - Removed unwanted interactions when Color Coded Pipes is installed
     - Fixed an issue where more than 64 connection categories would crash the game (thanks boskid)
