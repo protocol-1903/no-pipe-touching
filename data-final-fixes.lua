@@ -114,7 +114,7 @@ for _, prototype_category in pairs(prototypes) do
             -- only run this check if NOT an infinity pipe, those should connect to anything regardless
             if type(pipe_connection.connection_category) == "string" and category_blacklist[pipe_connection.connection_category] then
               goto continue
-            else
+            elseif type(pipe_connection.connection_category) == "table" then
               for _, category in pairs(pipe_connection.connection_category or {}) do
                 -- skip this pipe connection if it has a blacklisted connection that we don't modify
                 if category_blacklist[category] then goto continue end
