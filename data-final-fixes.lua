@@ -3,9 +3,12 @@ local pipes = {}
 
 local blacklist = {
   ["black-pipe"] = true,
-  ["4-to-4-pipe"] = true,
-  ["plasma-duct"] = true
+  ["4-to-4-pipe"] = true
 }
+
+if mods["plasma-duct"] then
+  data.raw.pipe["plasma-duct"].npt_compat = { ignore = true }
+end
 
 if mods["RGBPipes"] then
   categories = {
@@ -107,11 +110,15 @@ for _, prototype_category in pairs(prototypes) do
     for f, fluid_box in pairs(fluid_boxes) do
       if type(fluid_box) == "table" and not fluid_blacklist[fluid_box.filter] then
         for _, pipe_connection in pairs(fluid_box.pipe_connections or {}) do
-          if not prototype.type == "infinity-pipe" then
+          if prototype.type ~= "infinity-pipe" then
             -- only run this check if NOT an infinity pipe, those should connect to anything regardless
-            for _, category in pairs(pipe_connection.connection_category or {}) do
-              -- skip this pipe connection if it has a blacklisted connection that we don't modify
-              if category_blacklist[category] then goto continue end
+            if type(pipe_connection.connection_category) == "string" and category_blacklist[pipe_connection.connection_category] then
+              goto continue
+            else
+              for _, category in pairs(pipe_connection.connection_category or {}) do
+                -- skip this pipe connection if it has a blacklisted connection that we don't modify
+                if category_blacklist[category] then goto continue end
+              end
             end
           end
           if prototype.npt_compat == nil then
