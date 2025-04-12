@@ -31,6 +31,7 @@ NPT also features special compat that it uses for fluidboxes that shouldn't be m
 - [Color Coded Pipes](https://mods.factorio.com/mod/color-coded-pipes)
 - [Flow Control](https://mods.factorio.com/mod/Flow%20Control)
 - [Pipes Plus](https://mods.factorio.com/mod/pipe_plus)
+- [Actual Underground Pipes](https://mods.factorio.com/mod/the-one-mod-with-underground-bits)
 
 If you wish to add compatibility with a mod, talk to me on here or discord so we can sort it out.
 
