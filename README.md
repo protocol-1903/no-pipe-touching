@@ -1,4 +1,4 @@
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/B0B7145X5R) [![](https://img.shields.io/badge/dynamic/json?color=orange&label=Factorio&query=downloads_count&suffix=%20downloads&url=https%3A%2F%2Fmods.factorio.com%2Fapi%2Fmods%2Fno-pipe-touching&style=for-the-badge)](https://mods.factorio.com/mod/no-pipe-touching) [![](https://img.shields.io/badge/Discord-Community-blue?style=for-the-badge)](https://discord.gg/K3fXMGVc4z) ![](https://img.shields.io/badge/Github-Source-green?style=for-the-badge&link=github.com%2Fprotocol-1903%2Fno-pipe-touching)
+[![ko-fi](https://img.shields.io/badge/Ko--fi-Donate%20-hotpink?logo=kofi&logoColor=white&style=for-the-badge)](https://ko-fi.com/protocol1903) [![](https://img.shields.io/badge/dynamic/json?color=orange&label=Factorio&query=downloads_count&suffix=%20downloads&url=https%3A%2F%2Fmods.factorio.com%2Fapi%2Fmods%2Fno-pipe-touching&style=for-the-badge)](https://mods.factorio.com/mod/no-pipe-touching) [![](https://img.shields.io/badge/Discord-Community-blue?style=for-the-badge)](https://discord.gg/K3fXMGVc4z) [![](https://img.shields.io/badge/Github-Source-green?style=for-the-badge)](https://github.com/protocol-1903/no-pipe-touching)
 
 # This mod alters existing pipes. You will need another mod to add new pipes.
 
@@ -14,7 +14,7 @@ Should be compatible with most mods that adds unique pipes, if something breaks,
 By default, NPT completely replaces the connection categories defined by other mods. If you wish to add compatibility on your own, you have a few options:
 #
 - Add the `prototype.npt_compat = {}` table to your prototype (pipe, pipe to ground, tank, crafting machine, etc)
-- Add `npt_compat.mod = "your-mod-name"` REQUIRED FOR SMOOTH COMPATABILITY
+- Add `npt_compat.mod = "your-mod-name"` prevents two mods that add the same entities (e.g. steel pipe) from connecting to each other
 - Add `npt_compat.ignore = true` if you don't want NPT to do anything to that entity
 - Add `npt_compat.tag = "custom-tag"` for NPT to make all entities with the same tag connect. For example, `mod = "test-mod"` and `tag = "foo"` means that any entities with the `test-mod` and `foo` tags will connect. This means that two different mods with the same `tag` will not connect, so if you want them to connect, `mod` and `tag` must be the same. This is often easier and better than using `override`
 - Add `npt_compat.override = "custom-category"` to override what the connection_category is for all of the normal connections of that entity
