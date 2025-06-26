@@ -83,7 +83,8 @@ prototypes = {
   "radar",
   "reactor",
   "loader",
-  "infinity-pipe"
+  "infinity-pipe",
+  "valve"
 } 
 
 for _, prototype_category in pairs(prototypes) do
