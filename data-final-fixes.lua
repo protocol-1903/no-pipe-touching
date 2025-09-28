@@ -6,6 +6,21 @@ local blacklist = {
   ["4-to-4-pipe"] = true
 }
 
+local function has_default_category(pipe_connection)
+  if pipe_connection == nil or #pipe_connection == 0 then return true end
+  for _, category in pairs(pipe_connection.connection_category or {pipe_connection.connection_category}) do
+    if category == "default" then return true end
+  end
+  return false
+end
+
+local function contains_default_category(pipe_connections)
+  for _, pipe_connection in pairs(pipe_connections) do
+    if has_default_category(pipe_connection) then return true end
+  end
+  return false
+end
+
 if mods["plasma-duct"] then
   data.raw.pipe["plasma-duct"].npt_compat = { ignore = true }
 end
@@ -22,11 +37,11 @@ if mods["RGBPipes"] then
   }
 end
 
-local category_blacklist = {
-  ["fusion-plasma"] = true
-}
+-- local category_blacklist = {
+--   ["fusion-plasma"] = true
+-- }
 
-local fluid_blacklist = {}
+-- local fluid_blacklist = {}
 
 for f, fluid in pairs(data.raw.fluid) do
   if fluid.npt_compat and fluid.npt_compat.blacklist then
@@ -44,7 +59,7 @@ for p, pipe in pairs(data.raw.pipe) do
     end
   elseif not pipe.npt_compat or not pipe.npt_compat.ignore then
     pipes[#pipes+1] = p
-    if not blacklist[p] then
+    if not blacklist[p] and contains_default_category(pipe.fluid_box.pipe_connections) then
       categories[#categories+1] = p
     end
   end
@@ -61,6 +76,10 @@ end
 if mods["pipe_plus"] then
   data.raw["pipe-to-ground"]["pipe-to-ground-2"].npt_compat = {override = "pipe", override_underground = "pipe-to-ground"}
   data.raw["pipe-to-ground"]["pipe-to-ground-3"].npt_compat = {override = "pipe", override_underground = "pipe-to-ground"}
+  data.raw["pipe-to-ground"]["pipe-to-ground-north"].npt_compat = {override = "pipe", override_underground = "pipe-to-ground"}
+  data.raw["pipe-to-ground"]["pipe-to-ground-east"].npt_compat = {override = "pipe", override_underground = "pipe-to-ground"}
+  data.raw["pipe-to-ground"]["pipe-to-ground-south"].npt_compat = {override = "pipe", override_underground = "pipe-to-ground"}
+  data.raw["pipe-to-ground"]["pipe-to-ground-west"].npt_compat = {override = "pipe", override_underground = "pipe-to-ground"}
 end
 
 -- all prototypes with fluidboxes
@@ -109,20 +128,13 @@ for _, prototype_category in pairs(prototypes) do
 
     -- change!
     for f, fluid_box in pairs(fluid_boxes) do
-      if type(fluid_box) == "table" and not fluid_blacklist[fluid_box.filter] then
+      if type(fluid_box) == "table" and contains_default_category(fluid_box.pipe_connections) then
         for _, pipe_connection in pairs(fluid_box.pipe_connections or {}) do
-          if prototype.type ~= "infinity-pipe" then
-            -- only run this check if NOT an infinity pipe, those should connect to anything regardless
-            if type(pipe_connection.connection_category) == "string" and category_blacklist[pipe_connection.connection_category] then
-              goto continue
-            elseif type(pipe_connection.connection_category) == "table" then
-              for _, category in pairs(pipe_connection.connection_category or {}) do
-                -- skip this pipe connection if it has a blacklisted connection that we don't modify
-                if category_blacklist[category] then goto continue end
-              end
-            end
+          if prototype.type ~= "infinity-pipe" and not has_default_category(pipe_connection) then
+            -- ignore if an infinity pipe (should connect to everything) and doesn't have the default category (custom connections, like plasma)
+            goto continue
           end
-          if prototype.npt_compat == nil then
+          if prototype.npt_compat == nil and has_default_category(pipe_connection) then
             local connection_category = {}
             for _, category in pairs(categories) do
               connection_category[#connection_category + 1] = category
@@ -142,7 +154,7 @@ for _, prototype_category in pairs(prototypes) do
             end
             pipe_connection.connection_category = new_list
             if pipe_connection.connection_type == "underground" then pipe_connection.connection_category = "pipe-to-ground" end
-          else --npt compat of some variety
+          elseif prototype.npt_compat then -- manual compat of some variety
             if prototype.npt_compat.tag then
               pipe_connection.connection_category = { prototype.npt_compat.mod .. "-" .. prototype.npt_compat.tag }
             elseif prototype.npt_compat.mod == "afh" then
@@ -167,33 +179,34 @@ end
 
 
 for p, pipe in pairs(data.raw.pipe) do
-  if pipe.npt_compat == nil then
-    for i, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
-      
-      pipe_connection.connection_category = { p }
+  if pipe.npt_compat == nil and contains_default_category(pipe.fluid_box.pipe_connections) then
+    for _, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
+      if has_default_category(pipe_connection) then
+        pipe_connection.connection_category = { p }
 
-      if mods["RGBPipes"] and (p == "red-pipe" or p == "yellow-pipe" or p == "green-pipe" or p == "teal-pipe" or p == "blue-pipe" or p == "purple-pipe") then
-        pipe_connection.connection_category[#pipe_connection.connection_category + 1] = p .. "-machine-connection"
-      end
-      
-      if mods["RGBPipes"] and p == "black-pipe" then
-        pipe_connection.connection_category = {
-          "red-pipe",
-          "yellow-pipe",
-          "green-pipe",
-          "teal-pipe",
-          "blue-pipe",
-          "purple-pipe",
-          "black-pipe"
-        }
+        if mods["RGBPipes"] and (p == "red-pipe" or p == "yellow-pipe" or p == "green-pipe" or p == "teal-pipe" or p == "blue-pipe" or p == "purple-pipe") then
+          pipe_connection.connection_category[#pipe_connection.connection_category + 1] = p .. "-machine-connection"
+        end
+        
+        if mods["RGBPipes"] and p == "black-pipe" then
+          pipe_connection.connection_category = {
+            "red-pipe",
+            "yellow-pipe",
+            "green-pipe",
+            "teal-pipe",
+            "blue-pipe",
+            "purple-pipe",
+            "black-pipe"
+          }
+        end
       end
     end
     for u, underground in pairs(data.raw["pipe-to-ground"]) do
-      if u:sub(1,-11) == p then
+      if u:sub(1,-11) == p and contains_default_category(underground.fluid_box.pipe_connections) then
         for i, pipe_connection in pairs(underground.fluid_box.pipe_connections) do
-          if pipe_connection.connection_type ~= "underground" then
+          if pipe_connection.connection_type ~= "underground" and has_default_category(pipe_connection) then
             pipe_connection.connection_category = table.deepcopy(pipe.fluid_box.pipe_connections[1].connection_category)
-          elseif pipe_connection.connection_type == "underground" then
+          elseif pipe_connection.connection_type == "underground" and has_default_category(pipe_connection) then
             pipe_connection.connection_category = u
           end
         end
@@ -203,15 +216,7 @@ for p, pipe in pairs(data.raw.pipe) do
     end
     ::continue::
   elseif pipe.npt_compat and pipe.npt_compat.ignore then
-    for i, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
-      if pipe_connection.connection_category == nil then
-        pipe_connection.connection_category = {}
-      -- if string, add to new table
-      elseif type(pipe_connection.connection_category) == "string" then
-        pipe_connection.connection_category = { pipe_connection.connection_category }
-      end
-      pipe_connection.connection_category[#pipe_connection.connection_category + 1] = "default"
-    end
+    -- do nothing
   elseif pipe.npt_compat and pipe.npt_compat.tag then
     for _, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
       pipe_connection.connection_category = { pipe.npt_compat.mod .. "-" .. pipe.npt_compat.tag }
@@ -277,7 +282,7 @@ for u, underground in pairs(data.raw["pipe-to-ground"]) do
         pipe_connection.connection_category = underground.npt_compat.override_underground or nil
       end
     end
-  elseif not underground.solved_by_npt and not (underground.npt_compat and underground.npt_compat.ignore) then
+  elseif not underground.solved_by_npt and not (underground.npt_compat and underground.npt_compat.ignore) and not contains_default_category(underground.fluid_box.pipe_connections) then
     for _, pipe_connection in pairs(underground.fluid_box.pipe_connections) do
       if pipe_connection.connection_type ~= "underground" then
         -- generic pipe connection, should connect to everything

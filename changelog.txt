@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.19
+Date: ????
+  Compatibility:
+    - Generalized compatibility with mods that add custom isolated pipe variants (like plasma ducts)
+    - Added compatibility to Pipe Plus' newly added underground variants
+---------------------------------------------------------------------------------------------------
 Version: 1.1.18
 Date: 2025-06-26
   Bugfixes:
