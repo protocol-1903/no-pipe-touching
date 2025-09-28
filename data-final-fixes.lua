@@ -9,7 +9,7 @@ local blacklist = {
 
 local function has_default_category(pipe_connection)
   if pipe_connection.connection_category == nil or #pipe_connection.connection_category == 0 then return true end
-  for _, category in pairs(pipe_connection.connection_category or {pipe_connection.connection_category}) do
+  for _, category in pairs(type(pipe_connection.connection_category) == table and pipe_connection.connection_category or {pipe_connection.connection_category}) do
     if category == "default" then return true end
   end
   return false
