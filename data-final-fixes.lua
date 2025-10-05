@@ -127,7 +127,7 @@ for _, prototype_category in pairs(prototypes) do
         for _, pipe_connection in pairs(fluid_box.pipe_connections or {}) do
           if prototype.type ~= "infinity-pipe" and not has_default_category(pipe_connection) then
             -- ignore if an infinity pipe (should connect to everything) and doesn't have the default category (custom connections, like plasma)
-            for _, category in pairs(pipe_connection.connection_category or {pipe_connection.connection_category}) do
+            for _, category in pairs(type(pipe_connection.connection_category) == "table" and pipe_connection.connection_category or {pipe_connection.connection_category}) do
               infinity_categories[category] = true -- add to the infinity pipe categories
             end
             goto continue

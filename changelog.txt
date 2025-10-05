@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.21
+Date: 2025-10-04
+  Bugfixes:
+    - Fixed a crash when indexing connection categories that are strings and not wrapped in a table 2: electric boogaloo
+---------------------------------------------------------------------------------------------------
 Version: 1.1.20
 Date: 2025-09-28
   Bugfixes:
