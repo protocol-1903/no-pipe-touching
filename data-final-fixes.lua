@@ -170,7 +170,7 @@ for _, prototype_category in pairs(prototypes) do
         end
       else -- has no normal connection, so must have some fancy connections
         for _, pipe_connection in pairs(fluid_box.pipe_connections) do
-          for _, category in pairs(pipe_connection.connection_category or {pipe_connection.connection_category}) do
+          for _, category in pairs(type(pipe_connection.connection_category) == "table" and pipe_connection.connection_category or {pipe_connection.connection_category}) do
             infinity_categories[category] = true -- add to the infinity pipe categories
           end
         end
@@ -311,7 +311,7 @@ end
 for _, pipe in pairs(data.raw["infinity-pipe"]) do
   local infinity_categories = infinity_categories -- duplicate for local manipulation
   for _, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
-    for _, category in pairs(pipe_connection.connection_category or {pipe_connection.connection_category}) do
+    for _, category in pairs(type(pipe_connection.connection_category) == "table" and pipe_connection.connection_category or {pipe_connection.connection_category}) do
       infinity_categories[category] = nil -- remove already existing categories
     end
   end
