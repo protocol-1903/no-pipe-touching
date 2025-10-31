@@ -36,6 +36,16 @@ if mods["RGBPipes"] then
     "blue-pipe-machine-connection",
     "purple-pipe-machine-connection"
   }
+  blacklist = {
+    ["black-pipe"] = true,
+    ["red-pipe"] = true,
+    ["yellow-pipe"] = true,
+    ["green-pipe"] = true,
+    ["teal-pipe"] = true,
+    ["blue-pipe"] = true,
+    ["purple-pipe"] = true,
+    ["4-to-4-pipe"] = true
+  }
 end
 
 for f, fluid in pairs(data.raw.fluid) do
@@ -48,16 +58,17 @@ end
 -- collect pipe types
 for p, pipe in pairs(data.raw.pipe) do
   if pipe.npt_compat and pipe.npt_compat.tag then
-    pipes[#pipes+1] = pipe.npt_compat.mod .. "-" .. pipe.npt_compat.tag
+    local tag = pipe.npt_compat.mod .. "-" .. pipe.npt_compat.tag
+    pipes[#pipes+1] = tag
+    infinity_categories[tag] = true
     if not blacklist[p] then
-      categories[#categories+1] = pipe.npt_compat.mod .. "-" .. pipe.npt_compat.tag
-      infinity_categories[pipe.npt_compat.mod .. "-" .. pipe.npt_compat.tag] = true
+      categories[#categories+1] = tag
     end
   elseif not pipe.npt_compat or not pipe.npt_compat.ignore then
     pipes[#pipes+1] = p
+    infinity_categories[p] = true
     if not blacklist[p] and contains_default_category(pipe.fluid_box.pipe_connections) then
       categories[#categories+1] = p
-      infinity_categories[p] = true
     end
   end
 end
@@ -99,7 +110,6 @@ prototypes = {
   "radar",
   "reactor",
   "loader",
-  -- "infinity-pipe",
   "valve"
 } 
 
@@ -127,32 +137,17 @@ for _, prototype_category in pairs(prototypes) do
     for f, fluid_box in pairs(fluid_boxes) do
       if type(fluid_box) == "table" and contains_default_category(fluid_box.pipe_connections) then
         for _, pipe_connection in pairs(fluid_box.pipe_connections or {}) do
-          if prototype.type ~= "infinity-pipe" and not has_default_category(pipe_connection) then
-            -- ignore if an infinity pipe (should connect to everything) and doesn't have the default category (custom connections, like plasma)
+          if not prototype.npt_compat and not has_default_category(pipe_connection) then
+            -- ignore if doesn't have the default category (custom connections, like plasma)
             for _, category in pairs(type(pipe_connection.connection_category) == "table" and pipe_connection.connection_category or {pipe_connection.connection_category}) do
               infinity_categories[category] = true -- add to the infinity pipe categories
             end
-            goto continue
-          end
-          if not prototype.npt_compat and has_default_category(pipe_connection) then
+          elseif not prototype.npt_compat and has_default_category(pipe_connection) then
             local connection_category = {}
             for _, category in pairs(categories) do
               connection_category[#connection_category + 1] = category
             end
-            local new_list = {}
-            for c, category in pairs(connection_category) do
-              local found = false
-              if mods["RGBPipes"] then
-                for _, blacklist in pairs({"black-pipe", "red-pipe", "yellow-pipe", "green-pipe", "teal-pipe", "blue-pipe", "purple-pipe"}) do
-                  if category == blacklist or category == nil then found = true end
-                end
-              end
-              if not found then new_list[#new_list + 1] = category end
-            end
-            if mods["RGBPipes"] and prototype_category == "infinity-pipe" then
-              new_list[#new_list + 1] = "black-pipe"
-            end
-            pipe_connection.connection_category = new_list
+            pipe_connection.connection_category = connection_category
             if pipe_connection.connection_type == "underground" then pipe_connection.connection_category = "pipe-to-ground" end
           elseif prototype.npt_compat then -- manual compat of some variety
             if prototype.npt_compat.tag then
@@ -168,7 +163,6 @@ for _, prototype_category in pairs(prototypes) do
             end
             -- otherwise, ignore
           end
-          ::continue::
         end
       else -- has no normal connection, so must have some fancy connections
         for _, pipe_connection in pairs(fluid_box.pipe_connections) do
@@ -199,8 +193,7 @@ for p, pipe in pairs(data.raw.pipe) do
             "green-pipe",
             "teal-pipe",
             "blue-pipe",
-            "purple-pipe",
-            "black-pipe"
+            "purple-pipe"
           }
         end
       end
@@ -215,10 +208,9 @@ for p, pipe in pairs(data.raw.pipe) do
           end
         end
         underground.solved_by_npt = true
-        goto continue
+        break
       end
     end
-    ::continue::
   elseif pipe.npt_compat and pipe.npt_compat.ignore then
     -- do nothing
   elseif pipe.npt_compat and pipe.npt_compat.tag then
@@ -309,7 +301,7 @@ for u, underground in pairs(data.raw["pipe-to-ground"]) do
   end
 end
 
--- add all the things to infinity pipes
+-- add all the things to infinity pipes, only adds categories and doesn't remove them
 for _, pipe in pairs(data.raw["infinity-pipe"]) do
   local infinity_categories = infinity_categories -- duplicate for local manipulation
   for _, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
