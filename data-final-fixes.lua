@@ -51,11 +51,13 @@ for p, pipe in pairs(data.raw.pipe) do
     pipes[#pipes+1] = pipe.npt_compat.mod .. "-" .. pipe.npt_compat.tag
     if not blacklist[p] then
       categories[#categories+1] = pipe.npt_compat.mod .. "-" .. pipe.npt_compat.tag
+      infinity_categories[pipe.npt_compat.mod .. "-" .. pipe.npt_compat.tag] = true
     end
   elseif not pipe.npt_compat or not pipe.npt_compat.ignore then
     pipes[#pipes+1] = p
     if not blacklist[p] and contains_default_category(pipe.fluid_box.pipe_connections) then
       categories[#categories+1] = p
+      infinity_categories[p] = true
     end
   end
 end
@@ -97,7 +99,7 @@ prototypes = {
   "radar",
   "reactor",
   "loader",
-  "infinity-pipe",
+  -- "infinity-pipe",
   "valve"
 } 
 
