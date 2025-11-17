@@ -13,7 +13,7 @@ end
 
 local function has_default_category(pipe_connection)
   if pipe_connection.connection_category == nil or #pipe_connection.connection_category == 0 then return true end
-  unify(pipe_connection.connection_category)
+  pipe_connection.connection_category = unify(pipe_connection.connection_category)
   for _, category in pairs(pipe_connection.connection_category) do
     if category == "default" then return true end
   end
