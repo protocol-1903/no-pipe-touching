@@ -7,9 +7,14 @@ local blacklist = {
   ["4-to-4-pipe"] = true
 }
 
+local function unify(categories)
+  return type(categories) == "table" and categories or {categories}
+end
+
 local function has_default_category(pipe_connection)
   if pipe_connection.connection_category == nil or #pipe_connection.connection_category == 0 then return true end
-  for _, category in pairs(type(pipe_connection.connection_category) == table and pipe_connection.connection_category or {pipe_connection.connection_category}) do
+  unify(pipe_connection.connection_category)
+  for _, category in pairs(pipe_connection.connection_category) do
     if category == "default" then return true end
   end
   return false
@@ -139,7 +144,8 @@ for _, prototype_category in pairs(prototypes) do
         for _, pipe_connection in pairs(fluid_box.pipe_connections or {}) do
           if not prototype.npt_compat and not has_default_category(pipe_connection) then
             -- ignore if doesn't have the default category (custom connections, like plasma)
-            for _, category in pairs(type(pipe_connection.connection_category) == "table" and pipe_connection.connection_category or {pipe_connection.connection_category}) do
+            pipe_connection.connection_category = unify(pipe_connection.connection_category)
+            for _, category in pairs(pipe_connection.connection_category) do
               infinity_categories[category] = true -- add to the infinity pipe categories
             end
           elseif not prototype.npt_compat and has_default_category(pipe_connection) then
@@ -166,7 +172,8 @@ for _, prototype_category in pairs(prototypes) do
         end
       else -- has no normal connection, so must have some fancy connections
         for _, pipe_connection in pairs(fluid_box.pipe_connections) do
-          for _, category in pairs(type(pipe_connection.connection_category) == "table" and pipe_connection.connection_category or {pipe_connection.connection_category}) do
+          pipe_connection.connection_category = unify(pipe_connection.connection_category)
+          for _, category in pairs(pipe_connection.connection_category) do
             infinity_categories[category] = true -- add to the infinity pipe categories
           end
         end
@@ -253,11 +260,7 @@ for u, underground in pairs(data.raw["pipe-to-ground"]) do
     for _, pipe_connection in pairs(underground.fluid_box.pipe_connections) do
       if pipe_connection.connection_type ~= "underground" then
         -- generic pipe connection, should connect to everything
-        if not pipe_connection.connection_category then -- make new table
-          pipe_connection.connection_category = {}
-        elseif type(pipe_connection.connection_category) == "string" then -- convert string to table
-          pipe_connection.connection_category = { pipe_connection.connection_category }
-        end
+        pipe_connection.connection_category = unify(pipe_connection.connection_category)
         for _, pipe_category in pairs(pipes) do
           pipe_connection.connection_category[#pipe_connection.connection_category+1] = pipe_category
         end
@@ -282,11 +285,7 @@ for u, underground in pairs(data.raw["pipe-to-ground"]) do
     for _, pipe_connection in pairs(underground.fluid_box.pipe_connections) do
       if pipe_connection.connection_type ~= "underground" then
         -- generic pipe connection, should connect to everything
-        if not pipe_connection.connection_category then -- make new table
-          pipe_connection.connection_category = {}
-        elseif type(pipe_connection.connection_category) == "string" then -- convert string to table
-          pipe_connection.connection_category = { pipe_connection.connection_category }
-        end
+        pipe_connection.connection_category = unify(pipe_connection.connection_category)
         for _, pipe_category in pairs(pipes) do
           pipe_connection.connection_category[#pipe_connection.connection_category+1] = pipe_category
         end
@@ -305,7 +304,8 @@ end
 for _, pipe in pairs(data.raw["infinity-pipe"]) do
   local infinity_categories = infinity_categories -- duplicate for local manipulation
   for _, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
-    for _, category in pairs(type(pipe_connection.connection_category) == "table" and pipe_connection.connection_category or {pipe_connection.connection_category}) do
+    pipe_connection.connection_category = unify(pipe_connection.connection_category)
+    for _, category in pairs(pipe_connection.connection_category) do
       infinity_categories[category] = nil -- remove already existing categories
     end
   end

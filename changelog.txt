@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.24
+Date: 2025-11-16
+  Bugfixes:
+    - Fixed a load failure introduced in the last version. Resolves https://github.com/protocol-1903/no-pipe-touching/issues/23
+---------------------------------------------------------------------------------------------------
 Version: 1.1.23
 Date: 2025-10-30
   Bugfixes:
