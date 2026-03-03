@@ -4,7 +4,7 @@
 
 ## What?
 NPT allows pipes to only connect to pipes of the same material, including underground pipes! Pipe weaving is now possible!
-Please report any bugs here or on [github](https://github.com/protocol-1903/default-settings)
+Please report any bugs here or on [github](https://github.com/protocol-1903/no-pipe-touching)
 
 Got a cool base that uses my mod? Let me know and I can pics up on the mod portal!
 
@@ -26,14 +26,15 @@ NPT also features special compat that it uses for fluidboxes that shouldn't be m
 - Add `npt_compat.blacklist = true`. You don't need to add anything to fluidbox filter fluids that should connect to NPT pipes.
 
 ## Known compatibility:
+- [Parallel Piping](https://mods.factorio.com/mod/parallel-piping)
+- [Actual Underground Pipes](https://mods.factorio.com/mod/the-one-mod-with-underground-bits)
 - Pymods
 - [RGB Pipes](https://mods.factorio.com/mod/RGBPipes)
 - [Color Coded Pipes](https://mods.factorio.com/mod/color-coded-pipes)
 - [Flow Control](https://mods.factorio.com/mod/Flow%20Control)
 - [Pipes Plus](https://mods.factorio.com/mod/pipe_plus)
-- [Actual Underground Pipes](https://mods.factorio.com/mod/the-one-mod-with-underground-bits)
 
-If you wish to add compatibility with a mod, talk to me on here or discord so we can sort it out.
+If you wish to add compatibility with a mod, talk to me on github or discord so we can sort it out.
 
 ## History
 This is a complete rebuild of the 1.1 version using connection_category, a new feature in the 2.0 modding API. Old versions used scripting and a ton of filler entities. The old code won't be useful... at least here :)
