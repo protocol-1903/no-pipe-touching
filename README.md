@@ -41,4 +41,5 @@ This is a complete rebuild of the 1.1 version using connection_category, a new f
 
 The old version is a revamp of [Incompatible Pipes](https://mods.factorio.com/mod/incompatible-pipes) by sticklord. It was rebuilt from the ground up for 1.1.
 
+My mods are made 100% by humans, with no computer generated code or graphics.
 If you have a mod idea, let me know and I can look into it.
