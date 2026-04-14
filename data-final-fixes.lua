@@ -7,8 +7,8 @@ local blacklist = {
   ["4-to-4-pipe"] = true
 }
 
-local function unify(categories)
-  return type(categories) == "table" and categories or {categories}
+local function unify(t)
+  return type(t) == "table" and t or {t}
 end
 
 local function has_default_category(pipe_connection)
@@ -53,13 +53,6 @@ if mods["RGBPipes"] then
   }
 end
 
-for f, fluid in pairs(data.raw.fluid) do
-  if fluid.npt_compat and fluid.npt_compat.blacklist then
-    fluid_blacklist[f] = true
-  end
-  fluid.npt_compat = nil
-end
-
 -- collect pipe types
 for p, pipe in pairs(data.raw.pipe) do
   if pipe.npt_compat and pipe.npt_compat.tag then
@@ -96,10 +89,11 @@ if mods["pipe_plus"] then
 end
 
 -- all prototypes with fluidboxes
-prototypes = {
+local prototypes = {
   "pump",
   "storage-tank",
   "assembling-machine",
+  "rocket-silo",
   "furnace",
   "boiler",
   "fluid-turret",
@@ -116,7 +110,7 @@ prototypes = {
   "reactor",
   "loader",
   "valve"
-} 
+}
 
 for _, prototype_category in pairs(prototypes) do
   for _, prototype in pairs(data.raw[prototype_category] or {}) do
