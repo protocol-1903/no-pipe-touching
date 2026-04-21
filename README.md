@@ -42,7 +42,7 @@ NPT also features special compat that it uses for fluidboxes that shouldn't be m
 If you wish to add compatibility with a mod, talk to me on github or discord so we can sort it out.
 
 ## History
-This is a complete rebuild of the 1.1 version using connection_category, a new feature in the 2.0 modding API. Old versions used scripting and a ton of filler entities. The old code won't be useful... at least here :)
+This is a complete rebuild of the 1.1 version using connection_category, a new feature in the 2.0 modding API. Old versions used scripting and a ton of filler entities. The old code won't be useful... at least here :) It was used as a base for [Parallel Piping](https://mods.factorio.com/mod/parallel-piping)
 
 The old version is a revamp of [Incompatible Pipes](https://mods.factorio.com/mod/incompatible-pipes) by sticklord. It was rebuilt from the ground up for 1.1.
 
