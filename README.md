@@ -26,13 +26,18 @@ NPT also features special compat that it uses for fluidboxes that shouldn't be m
 - Add `npt_compat.blacklist = true`. You don't need to add anything to fluidbox filter fluids that should connect to NPT pipes.
 
 ## Known compatibility:
-- [Parallel Piping](https://mods.factorio.com/mod/parallel-piping)
-- [Actual Underground Pipes](https://mods.factorio.com/mod/the-one-mod-with-underground-bits)
-- Pymods
-- [RGB Pipes](https://mods.factorio.com/mod/RGBPipes)
-- [Color Coded Pipes](https://mods.factorio.com/mod/color-coded-pipes)
-- [Flow Control](https://mods.factorio.com/mod/Flow%20Control)
-- [Pipes Plus](https://mods.factorio.com/mod/pipe_plus)
+- [Parallel Piping](https://mods.factorio.com/mod/parallel-piping): Fully supported
+- [Pipe Junctions](https://mods.factorio.com/mod/pipe-junctions): Fully supported
+- [Actual Underground Pipes](https://mods.factorio.com/mod/the-one-mod-with-underground-bits): Fully supported
+- [RGB Pipes](https://mods.factorio.com/mod/RGBPipes): Fully supported
+- [Color Coded Pipes](https://mods.factorio.com/mod/color-coded-pipes): Fully supported
+- [Flow Control](https://mods.factorio.com/mod/Flow%20Control): Fully supported
+- [Pipes Plus](https://mods.factorio.com/mod/pipe_plus): Fully supported
+- [pYmods](https://mods.factorio.com/mod/pyalternativeenergy): Fully supported
+- [Nullius](https://mods.factorio.com/mod/nullius): Fully supported
+- [Krastorio 2](https://mods.factorio.com/mod/Krastorio2): Fully supported
+- [Space Exploration](https://mods.factorio.com/mod/space-exploration): Fully supported
+- [Bob's Logistics mod](https://mods.factorio.com/mod/boblogistics): Fully supported
 
 If you wish to add compatibility with a mod, talk to me on github or discord so we can sort it out.
 
