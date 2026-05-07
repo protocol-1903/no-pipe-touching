@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.27
+Date: 2026-05-07
+  Changes:
+    - Changed logic variables to global scope for external modification
+    - Adjusted logic to use file based compatibility patches
+    - Removed blacklist functionality in favor of npt_compat.ignore_category
+  Compatibility:
+    - Fixed that nullius pipes would not connect to their associated pipe to grounds. Resolves https://github.com/protocol-1903/no-pipe-touching/issues/24
+---------------------------------------------------------------------------------------------------
 Version: 1.1.26
 Date: 2026-04-14
   Changes:
