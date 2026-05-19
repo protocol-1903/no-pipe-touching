@@ -2,7 +2,7 @@
 Version: 1.1.28
 Date: 2026-05-18
   Bugfixes:
-    - Fixed a load error with Advanced Fluid Handling. https://github.com/protocol-1903/no-pipe-touching/issues/25
+    - Fixed a load error with Advanced Fluid Handling. Resolves https://github.com/protocol-1903/no-pipe-touching/issues/25
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.27
 Date: 2026-05-07
