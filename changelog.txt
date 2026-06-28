@@ -1,4 +1,14 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.2.0
+Date: 2026-06-27
+  Features:
+    - Updated for Factorio 2.1
+    - Added npt_compat.clear_categories to ignore all existing categories on a pipe (easier than clearing manually)
+  Changes:
+    - Updated license
+  Bugfixes:
+    - Fixed that RGB pipes would not work properly
+---------------------------------------------------------------------------------------------------
 Version: 1.1.28
 Date: 2026-05-18
   Bugfixes:

@@ -41,6 +41,18 @@ for p, pipe in pairs(data.raw.pipe) do
       npt.categories[p] = true
     end
   end
+  if pipe.npt_compat then
+    pipe.npt_compat.ignore_category = nil
+    if pipe.npt_compat.clear_categories then
+      for _, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
+        pipe_connection.connection_category = nil
+      end
+      pipe.npt_compat.clear_categories = nil
+    end
+    if not next(pipe.npt_compat) then
+      pipe.npt_compat = nil
+    end
+  end
 end
 
 -- all prototypes with fluidboxes
@@ -75,17 +87,20 @@ for _, prototype_category in pairs(prototypes) do
       fluid_boxes[#fluid_boxes + 1] = fluid_box
     end
     -- single fluid_box
-    if prototype.fluid_box then fluid_boxes[#fluid_boxes + 1] = prototype.fluid_box end
+    fluid_boxes[#fluid_boxes + 1] = prototype.fluid_box
     -- input fluid_box
-    if prototype.input_fluid_box then fluid_boxes[#fluid_boxes + 1] = prototype.input_fluid_box end
+    fluid_boxes[#fluid_boxes + 1] = prototype.input_fluid_box
     -- output fluid_box
-    if prototype.output_fluid_box then fluid_boxes[#fluid_boxes + 1] = prototype.output_fluid_box end
+    fluid_boxes[#fluid_boxes + 1] = prototype.output_fluid_box
     -- fuel fluid_box
-    if prototype.fuel_fluid_box then fluid_boxes[#fluid_boxes + 1] = prototype.fuel_fluid_box end
+    fluid_boxes[#fluid_boxes + 1] = prototype.fuel_fluid_box
     -- oxidizer fluid_box
-    if prototype.oxidizer_fluid_box then fluid_boxes[#fluid_boxes + 1] = prototype.oxidizer_fluid_box end
+    fluid_boxes[#fluid_boxes + 1] = prototype.oxidizer_fluid_box
     -- energy source fluid_box
-    if prototype.energy_source and prototype.energy_source.type == "fluid" then fluid_boxes[#fluid_boxes + 1] = prototype.energy_source.fluid_box end
+    if prototype.energy_source and prototype.energy_source.type == "fluid" then
+      fluid_boxes[#fluid_boxes + 1] = prototype.energy_source.fluid_box
+      fluid_boxes[#fluid_boxes + 1] = prototype.energy_source.output_fluid_box
+    end
 
     -- change!
     for f, fluid_box in pairs(fluid_boxes) do

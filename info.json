@@ -1,14 +1,14 @@
 {
   "name": "no-pipe-touching",
-  "version": "1.1.28",
+  "version": "1.2.0",
   "title": "No Pipe Touching 2.0",
   "description": "This mod alters existing pipes. You will need another mod to add new pipes.\nAllows you to place pipes of different materials next to each other without them connecting. Designed as a less fancy alternative to advanced fluid handling, without the recipe complexity of flow control.",
   "author": "protocol_1903",
   "contact": "https://discord.gg/K3fXMGVc4z",
   "homepage": "https://github.com/protocol-1903/no-pipe-touching",
-  "factorio_version": "2.0",
+  "factorio_version": "2.1",
   "dependencies": [
-    "base >= 2.0.48",
+    "base >= 2.1",
     "? RGBPipes",
     "? color-coded-pipes >= 1.0.3",
     "? underground-pipe-pack >= 2.0.3",

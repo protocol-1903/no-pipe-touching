@@ -7,13 +7,13 @@ npt.categories["teal-pipe-machine-connection"] = true
 npt.categories["blue-pipe-machine-connection"] = true
 npt.categories["purple-pipe-machine-connection"] = true
 
-data.raw.pipe["black-pipe"].npt_compat = { ignore_category = true }
-data.raw.pipe["red-pipe"].npt_compat = { ignore_category = true }
-data.raw.pipe["yellow-pipe"].npt_compat = { ignore_category = true }
-data.raw.pipe["green-pipe"].npt_compat = { ignore_category = true }
-data.raw.pipe["teal-pipe"].npt_compat = { ignore_category = true }
-data.raw.pipe["blue-pipe"].npt_compat = { ignore_category = true }
-data.raw.pipe["purple-pipe"].npt_compat = { ignore_category = true }
+data.raw.pipe["black-pipe"].npt_compat = { ignore_category = true, clear_categories = true }
+data.raw.pipe["red-pipe"].npt_compat = { ignore_category = true, clear_categories = true }
+data.raw.pipe["yellow-pipe"].npt_compat = { ignore_category = true, clear_categories = true }
+data.raw.pipe["green-pipe"].npt_compat = { ignore_category = true, clear_categories = true }
+data.raw.pipe["teal-pipe"].npt_compat = { ignore_category = true, clear_categories = true }
+data.raw.pipe["blue-pipe"].npt_compat = { ignore_category = true, clear_categories = true }
+data.raw.pipe["purple-pipe"].npt_compat = { ignore_category = true, clear_categories = true }
 
 data.raw.pipe["red-pipe"].localised_description = "Connects to Black pipes and machines"
 data.raw.pipe["yellow-pipe"].localised_description = "Connects to Black pipes and machines"
