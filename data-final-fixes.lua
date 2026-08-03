@@ -112,7 +112,7 @@ for _, prototype_category in pairs(prototypes) do
 
     -- fluid wagons (special handling... yay)
     if prototype.type == "fluid-wagon" and has_default_category(prototype) then
-        local connection_category = {}
+        local connection_category = table.deepcopy(prototype.connection_category) or {}
         for category in pairs(npt.categories) do
           connection_category[#connection_category + 1] = category
         end
@@ -130,7 +130,7 @@ for _, prototype_category in pairs(prototypes) do
               npt.infinity_categories[category] = true -- add to the infinity pipe categories
             end
           elseif not prototype.npt_compat and has_default_category(pipe_connection) then
-            local connection_category = {}
+            local connection_category = table.deepcopy(pipe_connection.connection_category) or {}
             for category in pairs(npt.categories) do
               connection_category[#connection_category + 1] = category
             end
