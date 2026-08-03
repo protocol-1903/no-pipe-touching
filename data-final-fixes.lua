@@ -83,7 +83,8 @@ local prototypes = {
   "radar",
   "reactor",
   "loader",
-  "valve"
+  "valve",
+  "fluid-wagon"
 }
 
 for _, prototype_category in pairs(prototypes) do
@@ -107,6 +108,15 @@ for _, prototype_category in pairs(prototypes) do
     if prototype.energy_source and prototype.energy_source.type == "fluid" then
       fluid_boxes[#fluid_boxes + 1] = prototype.energy_source.fluid_box
       fluid_boxes[#fluid_boxes + 1] = prototype.energy_source.output_fluid_box
+    end
+
+    -- fluid wagons (special handling... yay)
+    if prototype.type == "fluid-wagon" and has_default_category(prototype) then
+        local connection_category = {}
+        for category in pairs(npt.categories) do
+          connection_category[#connection_category + 1] = category
+        end
+        prototype.connection_category = connection_category
     end
 
     -- change!

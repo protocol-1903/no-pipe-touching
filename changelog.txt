@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.2.1
+Date: ????
+  Bugfixes:
+    - Fixed that nonstandard pumps couldn't connect to fluid wagons. Resolves https://github.com/protocol-1903/no-pipe-touching/issues/27
+---------------------------------------------------------------------------------------------------
 Version: 1.2.0
 Date: 2026-06-27
   Features:
