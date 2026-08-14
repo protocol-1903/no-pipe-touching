@@ -34,6 +34,17 @@ end
 
 -- collect pipe types
 for p, pipe in pairs(data.raw.pipe) do
+  if pipe.npt_compat then
+    if pipe.npt_compat.clear_categories then
+      for _, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
+        pipe_connection.connection_category = nil
+      end
+      pipe.npt_compat.clear_categories = nil
+    end
+    if not next(pipe.npt_compat) then
+      pipe.npt_compat = nil
+    end
+  end
   if pipe.npt_compat and pipe.npt_compat.tag then
     local tag = pipe.npt_compat.mod .. "-" .. pipe.npt_compat.tag
     npt.pipes[#npt.pipes+1] = tag
@@ -48,16 +59,19 @@ for p, pipe in pairs(data.raw.pipe) do
       npt.categories[p] = true
     end
   end
-  if pipe.npt_compat then
-    pipe.npt_compat.ignore_category = nil
-    if pipe.npt_compat.clear_categories then
-      for _, pipe_connection in pairs(pipe.fluid_box.pipe_connections) do
+end
+
+-- update pipe-to-grounds
+for u, underground in pairs(data.raw["pipe-to-ground"]) do
+  if underground.npt_compat then
+    if underground.npt_compat.clear_categories then
+      for _, pipe_connection in pairs(underground.fluid_box.pipe_connections) do
         pipe_connection.connection_category = nil
       end
-      pipe.npt_compat.clear_categories = nil
+      underground.npt_compat.clear_categories = nil
     end
-    if not next(pipe.npt_compat) then
-      pipe.npt_compat = nil
+    if not next(underground.npt_compat) then
+      underground.npt_compat = nil
     end
   end
 end
@@ -123,6 +137,17 @@ for _, prototype_category in pairs(prototypes) do
     for f, fluid_box in pairs(fluid_boxes) do
       if type(fluid_box) == "table" and contains_default_category(fluid_box.pipe_connections) then
         for _, pipe_connection in pairs(fluid_box.pipe_connections or {}) do
+          if prototype.npt_compat then
+            if prototype.npt_compat.clear_categories then
+              for _, pipe_connection in pairs(fluid_box.pipe_connections) do
+                pipe_connection.connection_category = nil
+              end
+              prototype.npt_compat.clear_categories = nil
+            end
+            if not next(prototype.npt_compat) then
+              prototype.npt_compat = nil
+            end
+          end
           if not prototype.npt_compat and not has_default_category(pipe_connection) then
             -- ignore if doesn't have the default category (custom connections, like plasma)
             pipe_connection.connection_category = unify(pipe_connection.connection_category)
