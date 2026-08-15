@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.1
-Date: ????
+Date: 2026-08-15
   Bugfixes:
     - Fixed krastorio steel pipes not connecting to anything. Resolves https://github.com/protocol-1903/no-pipe-touching/issues/26
     - Fixed that nonstandard pumps couldn't connect to fluid wagons. Resolves https://github.com/protocol-1903/no-pipe-touching/issues/27
