@@ -1,6 +1,6 @@
 {
   "name": "no-pipe-touching",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "title": "No Pipe Touching 2.0",
   "description": "This mod alters existing pipes. You will need another mod to add new pipes.\nAllows you to place pipes of different materials next to each other without them connecting. Designed as a less fancy alternative to advanced fluid handling, without the recipe complexity of flow control.",
   "author": "protocol_1903",
@@ -13,6 +13,7 @@
     "? color-coded-pipes >= 1.0.3",
     "? underground-pipe-pack >= 2.0.3",
     "? FluidMustFlow",
-    "? Flow Control"
+    "? Flow Control",
+    "(?) zzz-nonstandard-beacons"
   ]
 }

@@ -10,6 +10,10 @@ npt.categories = { default = true }
 npt.infinity_categories = {}
 npt.pipes = {}
 
+---@class (partial) data.EntityWithOwnerPrototype
+---@field npt_compat {clear_categories: boolean?, tag: string?, mod: string?, ignore_category: boolean?, ignore: boolean?, override: string?, override_underground: string?, tier: int?}
+---@field solved_by_npt boolean?
+
 require "compatibility.compatibility"
 
 local function unify(t)
